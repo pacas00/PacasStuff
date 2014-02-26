@@ -1,0 +1,21 @@
+[
+{
+  "modid": "pacas_stuff",
+  "name": "Pacas00's Random Mod of Stuff!",
+  "description": "Who the hell knows...",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authors": [
+    "pacas00"
+  ],
+  "credits": "pacas00",
+  "logoFile": "",
+  "screenshots": [
+  ],
+  "parent":"",
+  "dependencies": [
+  ]
+}
+]

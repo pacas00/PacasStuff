@@ -1,0 +1,126 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            name = "forge"
+            url = "http://files.minecraftforge.net/maven"
+        }
+        maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:1.1-SNAPSHOT'
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'forge'
+
+
+def buildnumber = System.getenv("BUILD_NUMBER") ?: "1"
+version = "v1.0." + buildnumber.toString()
+group= "net.petercashel.PacasStuff" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "PacasStuff"
+
+def mavenpass = System.getenv("maven_pass") ?: "1"
+def mavenuser = System.getenv("maven_user") ?: "1"
+
+minecraft {
+    version = "1.7.2-10.12.0.1024"
+    assetDir = "eclipse/assets"
+}
+processResources
+{
+    // replace stuff in mcmod.info, nothing else
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+                
+        // replace version and mcversion
+        expand 'version':project.version, 'mcversion':project.minecraft.version
+    }
+        
+    // copy everything else, thats not the mcmod.info
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+}
+
+jar {
+    classifier = 'universal'
+    version = "${project.minecraft.version}-${project.version}"
+    
+}
+// Add in a source jar for people, should they desire to download such a thing
+task sourceJar(type: Jar) {
+	from sourceSets.main.allSource
+	classifier = 'src'
+    version = "${project.minecraft.version}-${project.version}"
+}
+
+// Add in an mcp named jar, for those who wish to run in a development environment (assuming mcp naming matches)
+task deobfJar(type: Jar) {
+	from sourceSets.main.output
+	classifier = 'deobf'
+    version = "${project.minecraft.version}-${project.version}"
+}
+
+// Tell the artifact system about our extra jars
+artifacts {
+	archives sourceJar, deobfJar
+}
+
+uploadArchives {
+    dependsOn 'reobf'
+    repositories {
+            logger.info('Publishing to files server')
+            
+            mavenDeployer {
+                repository(url: "http://htb.petercashel.net:8125/repository/internal/") {
+                    authentication(userName: mavenuser.toString(), password: mavenpass.toString())
+                }
+
+                // This is just the pom data for the maven repo
+                pom {
+                    groupId = project.group
+                    version = "${project.minecraft.version}-${project.version}"
+                    artifactId = project.archivesBaseName
+                    project {
+                        name project.archivesBaseName
+                        packaging 'jar'
+                        description 'PacasStuff'
+                        url 'https://github.com/pacas00/PacasStuff'
+
+                        scm {
+                            url 'https://github.com/pacas00/PacasStuff'
+                            connection 'scm:git:git://github.com/pacas00/PacasStuff.git'
+                            developerConnection 'scm:git:git@github.com:pacas00/PacasStuff.git'
+                        }
+
+                        issueManagement {
+                            system 'github'
+                            url 'https://github.com/pacas00/PacasStuff/issues'
+                        }
+
+                        licenses {
+                            license {
+                                name 'GNU Public License (GPL), Version 3.0'
+                                url 'http://www.gnu.org/licenses/gpl-3.0.txt'
+                                distribution 'repo'
+                            }
+                        }
+
+                        developers {
+                            developer {
+                                id 'pacas00'
+                                name 'pacas00'
+                                roles { role 'developer' }
+                            }
+                        }
+                    }
+                }
+            }
+        
+    }
+}
