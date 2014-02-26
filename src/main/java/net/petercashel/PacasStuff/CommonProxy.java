@@ -21,4 +21,19 @@ public class CommonProxy implements IGuiHandler{
 	public void load(){
 		
 	}
+
+	public void prepareTileEntityInformation() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void initRenderingAndTextures() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void registerTileEntities() {
+		// TODO Auto-generated method stub
+		
+	}
 }
