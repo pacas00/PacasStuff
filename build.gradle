@@ -53,7 +53,7 @@ jar {
 }
 task universalJar(type: Jar) {
 	classifier = 'universal'
-    from sourceSets.main.java, sourceSets.main.resources
+    from sourceSets.main.output, sourceSets.main.resources
     version = "${project.minecraft.version}-${project.version}"
 }
 // Add in a source jar for people, should they desire to download such a thing
