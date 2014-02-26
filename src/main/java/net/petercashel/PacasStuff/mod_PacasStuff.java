@@ -2,7 +2,7 @@ package net.petercashel.PacasStuff;
 
 import org.apache.logging.log4j.Level;
 
-import net.minecraft.block.Block;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import cpw.mods.fml.common.*;
@@ -10,11 +10,6 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.common.event.FMLServerStoppingEvent;
-import cpw.mods.fml.common.network.FMLEventChannel;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 
 @Mod(modid = "mod_pacasstuff", name = "PacasStuff")
@@ -22,10 +17,15 @@ public class mod_PacasStuff {
 	
 	@Instance("mod_PacasStuff")
 	public static mod_PacasStuff instance;
-
+	
 	@SidedProxy(clientSide = "net.petercashel.PacasStuff.ClientProxy", serverSide = "net.petercashel.PacasStuff.CommonProxy")
 	public static CommonProxy proxy;
 
+	
+	static int tabID = CreativeTabs.getNextID();
+	public static String PacasStuff = "PacasStuff";
+	public static CreativeTabs tabPacasStuff = new CreativeTabPacasStuff(tabID, "PacasStuff");
+	
 	public static final String CATEGORY_GENERAL = "general";
 	
 	@EventHandler
