@@ -1,1 +1,3 @@
 pacas00:https://raw.github.com/pacas00/PacasStuff/master/capes/pacas00.png
+udha:https://raw.github.com/pacas00/PacasStuff/master/capes/udha.png
+mbuus:https://raw.github.com/pacas00/PacasStuff/master/capes/mbuus.png
