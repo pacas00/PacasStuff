@@ -68,7 +68,7 @@ task deobfJar(type: Jar) {
 
 // Tell the artifact system about our extra jars
 artifacts {
-	archives PomJar, sourceJar, deobfJar
+	archives sourceJar, deobfJar
 }
 
 def filesToCopy() {
