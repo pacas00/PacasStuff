@@ -71,14 +71,16 @@ artifacts {
 	archives sourceJar, deobfJar
 }
 
-def incName = '${project.archivesBaseName}-${project.minecraft.version}-${project.version}-universal.jar'
 task copyFiles(type: Copy) {
     dependsOn 'reobf'
-    println incName.toString()
-    from( 'build/libs/')
+    
+    def inputFile = project.archivesBaseName + ''- + project.minecraft.version + '-' + project.version + '-universal.jar'
+    def outputFile = project.archivesBaseName + ''- + project.minecraft.version + '-' + project.version + '.jar'
+    
+    from ('build/libs/')
     into ('build/libs/')
-    include incName.toString()
-    rename ('$\\{project.archivesBaseName\\}-$\\{project.minecraft.version\\}-$\\{project.version\\}-universal.jar','${project.archivesBaseName}-${project.minecraft.version}-${project.version}.jar')
+    include (inputFile)
+    rename (inputFile, outputFile)
 }
 
 uploadArchives {
