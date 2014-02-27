@@ -79,7 +79,7 @@ artifacts {
 }
 
 uploadArchives {
-    dependsOn 'reobf', 'reobfPomJar'
+    dependsOn 'reobf'//, 'reobfPomJar'
     repositories {
             logger.info('Publishing to files server')
             
