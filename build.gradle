@@ -79,9 +79,15 @@ def filesToCopy() {
     }
 }
 
-task copyFiles << {
+task copyFiles(type: Copy) {
     dependsOn 'reobf'
-    filesToCopy()
+    from( '${buildDir}/libs/') {
+        include '${project.archivesBaseName}-${project.minecraft.version}-${project.version}-universal.jar'
+        rename '${project.archivesBaseName}-${project.minecraft.version}-${project.version}.jar'
+        
+    }
+    into '${buildDir}/libs/'
+
 }
 
 uploadArchives {
