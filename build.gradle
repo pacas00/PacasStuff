@@ -75,7 +75,7 @@ def filesToCopy() {
     copy {
         from '${buildDir}/libs/${project.archivesBaseName}-${project.minecraft.version}-${project.version}-universal.jar'
         rename { '${project.archivesBaseName}-${project.minecraft.version}-${project.version}.jar' }
-        into ${buildDir}/libs/
+        into '${buildDir}/libs/'
     }
 }
 
