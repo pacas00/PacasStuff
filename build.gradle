@@ -55,6 +55,9 @@ jar {
 task PomJar(type: Jar) {
     version = "${project.minecraft.version}-${project.version}"
 }
+task reobfPomJar(type: reobf) {
+    from PomJar
+}
 
 // Add in a source jar for people, should they desire to download such a thing
 task sourceJar(type: Jar) {
@@ -76,7 +79,7 @@ artifacts {
 }
 
 uploadArchives {
-    dependsOn 'reobf'
+    dependsOn 'reobf', 'reobfPomJar'
     repositories {
             logger.info('Publishing to files server')
             
