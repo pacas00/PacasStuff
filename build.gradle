@@ -66,13 +66,20 @@ task deobfJar(type: Jar) {
     version = "${project.minecraft.version}-${project.version}"
 }
 
+
+task PomJar(type: Jar) {
+	from sourceSets.main.output
+	version = "${project.minecraft.version}-${project.version}"
+}
+
+
 // Tell the artifact system about our extra jars
 artifacts {
-	archives sourceJar, deobfJar
+	archives sourceJar, deobfJar, PomJar
 }
 
 task copyFiles(type: Copy) {
-    dependsOn 'reobf'
+    dependsOn 'reobf','PomJar'
     
     def inputFile = project.archivesBaseName + '-' + project.minecraft.version + '-' + project.version + '-universal.jar'
     def outputFile = project.archivesBaseName + '-' + project.minecraft.version + '-' + project.version + '.jar'
