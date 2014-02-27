@@ -78,8 +78,24 @@ artifacts {
 	archives PomJar, sourceJar, deobfJar
 }
 
+def filesToCopy = copySpec {
+  from '${project.archivesBaseName}-${project.minecraft.version}-${project.version}-universal.jar'
+  rename { '${project.archivesBaseName}-${project.minecraft.version}-${project.version}.jar' }
+}
+
+task copyFiles << {
+    dependsOn 'reobf'
+  ['build/libs', 'build/libs'].each { dest ->
+    copy {
+      with filesToCopy
+      into dest
+    }
+  }
+}
+
+
 uploadArchives {
-    dependsOn 'reobf'//, 'reobfPomJar'
+    dependsOn 'reobf', 'copyFiles'//, 'reobfPomJar'
     repositories {
             logger.info('Publishing to files server')
             
