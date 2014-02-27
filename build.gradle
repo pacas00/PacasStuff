@@ -47,12 +47,12 @@ processResources
 }
 
 jar {
-    version = "${project.minecraft.version}-${project.version}"   
+    version = "${project.minecraft.version}-${project.version}"
+    classifier = 'universal'
+    
 }
 
-task universalJar(type: Jar) {
-	classifier = 'universal'
-    from sourceSets.main.output
+task PomJar(type: Jar) {
     version = "${project.minecraft.version}-${project.version}"
 }
 
@@ -72,7 +72,7 @@ task deobfJar(type: Jar) {
 
 // Tell the artifact system about our extra jars
 artifacts {
-	archives universalJar, sourceJar, deobfJar
+	archives PomJar, sourceJar, deobfJar
 }
 
 uploadArchives {
