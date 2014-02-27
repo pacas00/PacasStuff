@@ -74,8 +74,8 @@ artifacts {
 task copyFiles(type: Copy) {
     dependsOn 'reobf'
     
-    def inputFile = project.archivesBaseName + ''- + project.minecraft.version + '-' + project.version + '-universal.jar'
-    def outputFile = project.archivesBaseName + ''- + project.minecraft.version + '-' + project.version + '.jar'
+    def inputFile = project.archivesBaseName + '-' + project.minecraft.version + '-' + project.version + '-universal.jar'
+    def outputFile = project.archivesBaseName + '-' + project.minecraft.version + '-' + project.version + '.jar'
     
     from ('build/libs/')
     into ('build/libs/')
