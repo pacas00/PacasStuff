@@ -83,7 +83,7 @@ task copyFiles(type: Copy) {
     dependsOn 'reobf'
     from( '${buildDir}/libs/') {
         include '${project.archivesBaseName}-${project.minecraft.version}-${project.version}-universal.jar'
-        rename '${project.archivesBaseName}-${project.minecraft.version}-${project.version}-universal.jar','${project.archivesBaseName}-${project.minecraft.version}-${project.version}.jar'
+        rename '(.*)universal(.*)','${project.archivesBaseName}-${project.minecraft.version}-${project.version}.jar'
     }
     into '${buildDir}/libs/'
 
