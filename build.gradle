@@ -71,22 +71,12 @@ artifacts {
 	archives sourceJar, deobfJar
 }
 
-def filesToCopy() {
-    copy {
-        from '${buildDir}/libs/${project.archivesBaseName}-${project.minecraft.version}-${project.version}-universal.jar'
-        rename { '${project.archivesBaseName}-${project.minecraft.version}-${project.version}.jar' }
-        into '${buildDir}/libs/'
-    }
-}
-
 task copyFiles(type: Copy) {
     dependsOn 'reobf'
-    from( '${buildDir}/libs/') {
-        include '${project.archivesBaseName}-${project.minecraft.version}-${project.version}-universal.jar'
-        rename '(.*)universal(.*)','${project.archivesBaseName}-${project.minecraft.version}-${project.version}.jar'
-    }
-    into '${buildDir}/libs/'
-
+    from( '${buildDir}/libs/')
+    into ('${buildDir}/libs/')
+    include ('${project.archivesBaseName}-${project.minecraft.version}-${project.version}-universal.jar')
+    rename ('${project.archivesBaseName}-${project.minecraft.version}-${project.version}-universal.jar','${project.archivesBaseName}-${project.minecraft.version}-${project.version}.jar')
 }
 
 uploadArchives {
