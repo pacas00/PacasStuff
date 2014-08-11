@@ -1,5 +1,5 @@
 PacasStuff
 -----------
-For Minecraft 1.7.2
+For Minecraft 1.7.10
 
-<a href='http://me.petercashel.net:8123/job/PacasStuff/'><img src='http://me.petercashel.net:8123/buildStatus/icon?job=PacasStuff'></a>
+<a href='http://jenkins.petercashel.net/job/PacasStuff/'><img src='http://jenkins.petercashel.net/buildStatus/icon?job=PacasStuff'></a>
