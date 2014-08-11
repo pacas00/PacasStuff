@@ -60,7 +60,6 @@ public class TileEntityPacChest2 extends TileEntity implements IInventory
 	private int ticksSinceSync;
 	private int cachedChestType;
 	private String customName;
-	private static final String __OBFID = "CL_00000346";
 
 	private ItemStack boxItem;
 
@@ -397,7 +396,7 @@ public class TileEntityPacChest2 extends TileEntity implements IInventory
 		  {
 			  this.numPlayersUsing = 0;
 			  f = 5.0F;
-			  List list = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getAABBPool().getAABB((double)((float)this.xCoord - f), (double)((float)this.yCoord - f), (double)((float)this.zCoord - f), (double)((float)(this.xCoord + 1) + f), (double)((float)(this.yCoord + 1) + f), (double)((float)(this.zCoord + 1) + f)));
+			  List list = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox((double)((float)this.xCoord - f), (double)((float)this.yCoord - f), (double)((float)this.zCoord - f), (double)((float)(this.xCoord + 1) + f), (double)((float)(this.yCoord + 1) + f), (double)((float)(this.zCoord + 1) + f)));
 			  Iterator iterator = list.iterator();
 
 			  while (iterator.hasNext())

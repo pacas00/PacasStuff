@@ -33,7 +33,6 @@ public class TileEntityPacChest2Renderer extends TileEntitySpecialRenderer
     private ModelChest field_147510_h = new ModelChest();
     private ModelChest field_147511_i = new ModelLargeChest();
     private boolean field_147509_j;
-    private static final String __OBFID = "CL_00000965";
 
     public TileEntityPacChest2Renderer()
     {

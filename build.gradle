@@ -11,7 +11,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.1-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
     }
 }
 
@@ -27,7 +27,7 @@ def mavenpass = System.getenv("maven_pass") ?: "1"
 def mavenuser = System.getenv("maven_user") ?: "1"
 
 minecraft {
-    version = "1.7.2-10.12.0.1024"
+    version = "1.7.10-10.13.0.1199"
     assetDir = "eclipse/assets"
 }
 processResources
@@ -96,7 +96,7 @@ uploadArchives {
             logger.info('Publishing to files server')
             
             mavenDeployer {
-                repository(url: "http://htb.petercashel.net:8125/repository/internal/") {
+                repository(url: "http://117.120.47.2:8110/repository/internal/") {
                     authentication(userName: mavenuser.toString(), password: mavenpass.toString())
                 }
 

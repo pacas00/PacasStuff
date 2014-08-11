@@ -58,8 +58,6 @@ public class mod_PacasStuff {
 		} finally {
 			cfg.save();
 		}
-        MinecraftForge.EVENT_BUS.register(new CapeEventHandler());
-		
         PacasOreChest = new net.petercashel.PacasStuff.pacChest.BlockPacChest(0).setBlockName("PacasOreChest").setBlockTextureName("PacasOreChest").setHardness(3.0F).setResistance(5.0F);
     	GameRegistry.registerBlock(PacasOreChest, ItemBlock.class, "BlockPacasOreChest");
     	GameRegistry.registerTileEntity(net.petercashel.PacasStuff.pacChest.TileEntityPacChest.class, "TileEntityPacChest");
