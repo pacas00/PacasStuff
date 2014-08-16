@@ -4,13 +4,19 @@ import org.apache.logging.log4j.Level;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
+import net.petercashel.PacasStuff.anvil.anvilManager;
 import cpw.mods.fml.common.*;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -32,10 +38,16 @@ public class mod_PacasStuff {
 	public static Block PacasOreChest;
 	public static Block PacasOreChest2;
 	public static Block PacasAnvil;
-	
-    
+	public static Item ItemPacasAnvilTool;
+
+	public static boolean CompatEnable;
+	public static boolean CompatIC2;
+	public static boolean CompatTE4;
+	public static boolean anvilBadItem;
 	
 	public static final String CATEGORY_GENERAL = "general";
+
+	private net.petercashel.PacasStuff.anvil.AnvilCompatibility AnvilCompat;
 	
 	@EventHandler
 	public void load(FMLInitializationEvent event) 
@@ -53,6 +65,13 @@ public class mod_PacasStuff {
 		Configuration cfg = new Configuration(event.getSuggestedConfigurationFile());
 		try {
 			cfg.load();
+			
+			anvilBadItem = cfg.get(CATEGORY_GENERAL, "anvilInvalidItemChat", false).getBoolean(false);
+
+			CompatEnable = cfg.get(CATEGORY_GENERAL, "CompatEnable", true).getBoolean(true);
+			CompatIC2 = cfg.get(CATEGORY_GENERAL, "CompatIC2", true).getBoolean(true);
+			CompatTE4 = cfg.get(CATEGORY_GENERAL, "CompatTE3", true).getBoolean(true);
+
 
 			
 		} catch (Exception e) {
@@ -72,14 +91,58 @@ public class mod_PacasStuff {
     	GameRegistry.registerBlock(PacasAnvil, ItemBlock.class, "BlockPacasAnvil");
     	GameRegistry.registerTileEntity(net.petercashel.PacasStuff.anvil.TileEntityPacasAnvil.class, "TileEntityPacasAnvil");
         
+    	GameRegistry.addRecipe(new ItemStack(PacasAnvil, 1), new Object[] { "OIO", " i ", "iii", Character.valueOf('O'), Blocks.obsidian, Character.valueOf('I'), Blocks.iron_block, Character.valueOf('i'), Items.iron_ingot });
     	
+    	ItemPacasAnvilTool = new net.petercashel.PacasStuff.anvil.ItemPacasAnvilTool().setMaxStackSize(1);
+		GameRegistry.registerItem(ItemPacasAnvilTool, "ItemPacasAnvilTool");
+
+		
 
 	}
 
 	@EventHandler
 	public void init(FMLInitializationEvent event){
 
+		anvilManager.Load();
+
+		addToAnvilManager();
 	}
 
+	public void addToAnvilManager() {
+		anvilManager.registerItem(new ItemStack(Items.diamond_sword), new ItemStack(Items.diamond));
+		anvilManager.registerItem(new ItemStack(Items.diamond_pickaxe), new ItemStack(Items.diamond), 3);
+		anvilManager.registerItem(new ItemStack(Items.diamond_shovel), new ItemStack(Items.diamond), 1);
+		anvilManager.registerItem(new ItemStack(Items.diamond_hoe), new ItemStack(Items.diamond), 1);
+		anvilManager.registerItem(new ItemStack(Items.diamond_axe), new ItemStack(Items.diamond), 3);
+
+		anvilManager.registerItem(new ItemStack(Items.iron_sword), new ItemStack(Items.iron_ingot));
+		anvilManager.registerItem(new ItemStack(Items.iron_pickaxe), new ItemStack(Items.iron_ingot), 3);
+		anvilManager.registerItem(new ItemStack(Items.iron_shovel), new ItemStack(Items.iron_ingot), 1);
+		anvilManager.registerItem(new ItemStack(Items.iron_hoe), new ItemStack(Items.iron_ingot), 1);
+		anvilManager.registerItem(new ItemStack(Items.iron_axe), new ItemStack(Items.iron_ingot), 3);
+
+		anvilManager.registerItem(new ItemStack(Items.golden_sword), new ItemStack(Items.gold_ingot));
+		anvilManager.registerItem(new ItemStack(Items.golden_pickaxe), new ItemStack(Items.gold_ingot));
+		anvilManager.registerItem(new ItemStack(Items.golden_shovel), new ItemStack(Items.gold_ingot), 1);
+		anvilManager.registerItem(new ItemStack(Items.golden_hoe), new ItemStack(Items.gold_ingot), 1);
+		anvilManager.registerItem(new ItemStack(Items.golden_axe), new ItemStack(Items.gold_ingot));
+
+		anvilManager.registerItem(new ItemStack(Items.bow), new ItemStack(Items.stick));
+		anvilManager.registerItem(new ItemStack(Items.fishing_rod), new ItemStack(Items.stick));
+
+	}
+	
+	@EventHandler
+	public void postInit(FMLPostInitializationEvent event) {
+
+		AnvilCompat = new net.petercashel.PacasStuff.anvil.AnvilCompatibility();
+		if (CompatEnable) {
+			AnvilCompat.init();
+		}
+		System.out.println("[PacasStuff] Anvil Compatiblity Checks Complete.");
+
+	}
+	
+	
 
 }
