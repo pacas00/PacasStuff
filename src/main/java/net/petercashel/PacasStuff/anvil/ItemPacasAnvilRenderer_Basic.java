@@ -1,4 +1,4 @@
-package net.petercashel.PacasStuff.pacChest;
+package net.petercashel.PacasStuff.anvil;
 
 import org.lwjgl.opengl.GL11;
 
@@ -9,17 +9,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.IItemRenderer;
-import net.petercashel.PacasStuff.anvil.ModelPacasAnvil;
-import net.petercashel.PacasStuff.anvil.TileEntityPacasAnvil;
-import net.petercashel.PacasStuff.anvil.TileEntityPacasAnvilRenderer;
 
-public class ItemPacasAnvilRenderer implements IItemRenderer {
+public class ItemPacasAnvilRenderer_Basic implements IItemRenderer {
 
 	TileEntitySpecialRenderer render;
 	
 	private TileEntity entity;
 	
-	public ItemPacasAnvilRenderer(TileEntitySpecialRenderer render, TileEntity entity) {
+	public ItemPacasAnvilRenderer_Basic(TileEntitySpecialRenderer render, TileEntity entity) {
 		this.entity = entity;
 		this.render = render;
 	}

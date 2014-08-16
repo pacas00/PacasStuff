@@ -11,6 +11,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
+import net.petercashel.PacasStuff.anvil.BlockPacasAnvil_basic;
 import net.petercashel.PacasStuff.anvil.anvilManager;
 import cpw.mods.fml.common.*;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -38,6 +39,7 @@ public class mod_PacasStuff {
 	public static Block PacasOreChest;
 	public static Block PacasOreChest2;
 	public static Block PacasAnvil;
+	public static Block PacasAnvil_Basic;
 	public static Item ItemPacasAnvilTool;
 
 	public static boolean CompatEnable;
@@ -87,13 +89,19 @@ public class mod_PacasStuff {
     	GameRegistry.registerBlock(PacasOreChest2, ItemBlock.class, "BlockPacasBottemlessChest");
     	GameRegistry.registerTileEntity(net.petercashel.PacasStuff.pacChest2.TileEntityPacChest2.class, "TileEntityPacChest2");
         
+    	PacasAnvil_Basic = new BlockPacasAnvil_basic().setBlockName("PacasAnvil_Basic").setBlockTextureName("PacasAnvil_Basic").setHardness(3.0F).setResistance(5.0F);
+    	GameRegistry.registerBlock(PacasAnvil_Basic, ItemBlock.class, "BlockPacasAnvil_Basic");
+    	GameRegistry.registerTileEntity(net.petercashel.PacasStuff.anvil.TileEntityPacasAnvil_Basic.class, "TileEntityPacasAnvil_Basic");
+        
+    	if (Loader.isModLoaded("appliedenergistics2")) {
     	PacasAnvil = new net.petercashel.PacasStuff.anvil.BlockPacasAnvil().setBlockName("PacasAnvil").setBlockTextureName("PacasAnvil").setHardness(3.0F).setResistance(5.0F);
     	GameRegistry.registerBlock(PacasAnvil, ItemBlock.class, "BlockPacasAnvil");
     	GameRegistry.registerTileEntity(net.petercashel.PacasStuff.anvil.TileEntityPacasAnvil.class, "TileEntityPacasAnvil");
-        
+    	}
+    	
     	GameRegistry.addRecipe(new ItemStack(PacasAnvil, 1), new Object[] { "OIO", " i ", "iii", Character.valueOf('O'), Blocks.obsidian, Character.valueOf('I'), Blocks.iron_block, Character.valueOf('i'), Items.iron_ingot });
     	
-    	ItemPacasAnvilTool = new net.petercashel.PacasStuff.anvil.ItemPacasAnvilTool().setMaxStackSize(1);
+    	ItemPacasAnvilTool = new net.petercashel.PacasStuff.anvil.ItemPacasAnvilTool().setMaxStackSize(1).setUnlocalizedName("ItemPacasAnvilTool");
 		GameRegistry.registerItem(ItemPacasAnvilTool, "ItemPacasAnvilTool");
 
 		
