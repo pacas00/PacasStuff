@@ -22,11 +22,15 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 
-@Mod(modid = "mod_pacasstuff", name = "PacasStuff")
+@Mod(modid = "mod_pacasstuff", name = "PacasStuff", version = mod_PacasStuff.VERSION, acceptedMinecraftVersions = mod_PacasStuff.MINECRAFT_VERSION, dependencies = mod_PacasStuff.DEPENDENCIES)
 public class mod_PacasStuff {
+	
+    public static final String DEPENDENCIES = "required-after:Forge@[10.13.0.1180,);after:appliedenergistics2";
 	
 	@Instance("mod_PacasStuff")
 	public static mod_PacasStuff instance;
+	public static final String VERSION = "@VERSION@";
+	public static final String MINECRAFT_VERSION = "[1.7.10]";
 	
 	@SidedProxy(clientSide = "net.petercashel.PacasStuff.ClientProxy", serverSide = "net.petercashel.PacasStuff.CommonProxy")
 	public static CommonProxy proxy;

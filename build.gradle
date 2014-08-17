@@ -18,7 +18,7 @@ buildscript {
 apply plugin: 'java'
 apply plugin: 'forge'
 
-def buildnumber = System.getenv("BUILD_NUMBER") ?: "1"
+def buildnumber = System.getenv("BUILD_NUMBER") ?: "dev"
 version = "v1.0." + buildnumber.toString()
 group= "net.petercashel.PacasStuff" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "PacasStuff"
@@ -29,6 +29,9 @@ def mavenuser = System.getenv("maven_user") ?: "1"
 minecraft {
     version = "1.7.10-10.13.0.1199"
     assetDir = "eclipse/assets"
+    
+    replaceIn "mod_PacasStuff.java"
+    replace "@VERSION@", project.version
 }
 processResources
 {
