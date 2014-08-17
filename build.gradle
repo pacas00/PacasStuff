@@ -33,6 +33,11 @@ minecraft {
     replaceIn "mod_PacasStuff.java"
     replace "@VERSION@", project.version
 }
+
+dependencies {
+    compile files('lib/appliedenergistics2-rv0-stable-10-api.jar');		// AE2 API
+}
+
 processResources
 {
     // replace stuff in mcmod.info, nothing else
