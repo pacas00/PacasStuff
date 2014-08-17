@@ -35,7 +35,7 @@ minecraft {
 }
 
 dependencies {
-    compile files('lib/appliedenergistics2-rv0-stable-10-api.jar');		// AE2 API
+    compile files('lib/appliedenergistics2-rv0-stable-10-dev.jar');		// AE2 dev version (NEED TO FIND WORK AROUND)
 }
 
 processResources
