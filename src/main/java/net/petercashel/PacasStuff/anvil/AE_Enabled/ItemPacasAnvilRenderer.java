@@ -1,4 +1,4 @@
-package net.petercashel.PacasStuff.anvil;
+package net.petercashel.PacasStuff.anvil.AE_Enabled;
 
 import org.lwjgl.opengl.GL11;
 

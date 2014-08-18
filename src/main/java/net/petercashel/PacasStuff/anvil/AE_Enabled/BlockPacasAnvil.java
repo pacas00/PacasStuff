@@ -1,4 +1,4 @@
-package net.petercashel.PacasStuff.anvil;
+package net.petercashel.PacasStuff.anvil.AE_Enabled;
 
 import com.mojang.authlib.GameProfile;
 
@@ -23,6 +23,7 @@ import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import net.petercashel.PacasStuff.mod_PacasStuff;
+import net.petercashel.PacasStuff.anvil.anvilManager;
 
 public class BlockPacasAnvil extends BlockContainer implements ITileEntityProvider {
 

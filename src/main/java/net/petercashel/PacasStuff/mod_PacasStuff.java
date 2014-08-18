@@ -11,6 +11,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
+import net.petercashel.PacasStuff.ModSpecific.AEModPlugin;
 import net.petercashel.PacasStuff.anvil.BlockPacasAnvil_basic;
 import net.petercashel.PacasStuff.anvil.anvilManager;
 import cpw.mods.fml.common.*;
@@ -25,7 +26,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 @Mod(modid = "mod_pacasstuff", name = "PacasStuff", version = mod_PacasStuff.VERSION, acceptedMinecraftVersions = mod_PacasStuff.MINECRAFT_VERSION, dependencies = mod_PacasStuff.DEPENDENCIES)
 public class mod_PacasStuff {
 	
-    public static final String DEPENDENCIES = "required-after:Forge@[10.13.0.1180,);after:appliedenergistics2";
+    public static final String DEPENDENCIES = "required-after:Forge@[10.13.0.1198,);after:appliedenergistics2";
 	
 	@Instance("mod_PacasStuff")
 	public static mod_PacasStuff instance;
@@ -98,12 +99,10 @@ public class mod_PacasStuff {
     	GameRegistry.registerTileEntity(net.petercashel.PacasStuff.anvil.TileEntityPacasAnvil_Basic.class, "TileEntityPacasAnvil_Basic");
         
     	if (Loader.isModLoaded("appliedenergistics2")) {
-    	PacasAnvil = new net.petercashel.PacasStuff.anvil.BlockPacasAnvil().setBlockName("PacasAnvil").setBlockTextureName("PacasAnvil").setHardness(3.0F).setResistance(5.0F);
-    	GameRegistry.registerBlock(PacasAnvil, ItemBlock.class, "BlockPacasAnvil");
-    	GameRegistry.registerTileEntity(net.petercashel.PacasStuff.anvil.TileEntityPacasAnvil.class, "TileEntityPacasAnvil");
+    		AEModPlugin.blocks();
     	}
     	
-    	GameRegistry.addRecipe(new ItemStack(PacasAnvil, 1), new Object[] { "OIO", " i ", "iii", Character.valueOf('O'), Blocks.obsidian, Character.valueOf('I'), Blocks.iron_block, Character.valueOf('i'), Items.iron_ingot });
+    	GameRegistry.addRecipe(new ItemStack(PacasAnvil_Basic, 1), new Object[] { "OIO", "rIr", "IpI", Character.valueOf('O'), Blocks.obsidian, Character.valueOf('I'), Blocks.iron_block, Character.valueOf('r'), Items.redstone, Character.valueOf('p'), Blocks.sticky_piston });
     	
     	ItemPacasAnvilTool = new net.petercashel.PacasStuff.anvil.ItemPacasAnvilTool().setMaxStackSize(1).setUnlocalizedName("ItemPacasAnvilTool");
 		GameRegistry.registerItem(ItemPacasAnvilTool, "ItemPacasAnvilTool");
@@ -151,6 +150,9 @@ public class mod_PacasStuff {
 		if (CompatEnable) {
 			AnvilCompat.init();
 		}
+		if (Loader.isModLoaded("appliedenergistics2")) {
+    		AEModPlugin.recipes();
+    	}
 		System.out.println("[PacasStuff] Anvil Compatiblity Checks Complete.");
 
 	}

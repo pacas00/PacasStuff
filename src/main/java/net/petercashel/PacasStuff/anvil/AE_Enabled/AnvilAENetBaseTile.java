@@ -1,4 +1,4 @@
-package net.petercashel.PacasStuff.anvil;
+package net.petercashel.PacasStuff.anvil.AE_Enabled;
 
 import io.netty.buffer.ByteBuf;
 

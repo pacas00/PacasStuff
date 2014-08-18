@@ -1,4 +1,4 @@
-package net.petercashel.PacasStuff.anvil;
+package net.petercashel.PacasStuff.anvil.AE_Enabled;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
