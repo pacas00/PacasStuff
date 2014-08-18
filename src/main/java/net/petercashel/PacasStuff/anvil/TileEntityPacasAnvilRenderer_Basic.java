@@ -28,7 +28,7 @@ public class TileEntityPacasAnvilRenderer_Basic extends TileEntitySpecialRendere
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		GL11.glScalef(1.0F, -1.0F, -1.0F);
 		model.render((Entity)null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
-		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+		//GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 		GL11.glScalef(1.0F, 1.0F, 1.0F);
 		GL11.glPopMatrix();
 	}
