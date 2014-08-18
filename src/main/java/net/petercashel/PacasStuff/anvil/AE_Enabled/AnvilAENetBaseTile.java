@@ -337,10 +337,8 @@ public class AnvilAENetBaseTile extends AENetworkTile {
 	
 	protected boolean extractItemFromNetwork( ItemStack item, World world, EntityPlayer player)
 	{
-		// Ensure we have a monitor
 		if( this.getItemMonitor() )
 		{
-			// Get the gas version of the aspect
 			IAEItemStack request = AEItemStack.create(item);
 			
 			// Simulate the extraction
@@ -355,7 +353,6 @@ public class AnvilAENetBaseTile extends AENetworkTile {
 			// Take from the network
 			IAEItemStack result = this.monitor.extractItems( request, Actionable.MODULATE, new MachineSource( this ) );
 
-			// Return how much was extracted
 			if (result.getStackSize() != 0) {
 				return true;	
 			}

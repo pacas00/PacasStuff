@@ -1,5 +1,7 @@
 package net.petercashel.PacasStuff.anvil;
 
+import java.util.ArrayList;
+
 import com.mojang.authlib.GameProfile;
 
 import cpw.mods.fml.common.Loader;
@@ -22,6 +24,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.OreDictionary;
 import net.petercashel.PacasStuff.mod_PacasStuff;
 
 public class BlockPacasAnvil_basic extends BlockContainer implements ITileEntityProvider {
@@ -62,19 +65,6 @@ public class BlockPacasAnvil_basic extends BlockContainer implements ITileEntity
 	}
 
 	/**
-	 * Called when the block is placed in the world.
-	 */
-	public void onBlockPlacedBy(World w, int x, int y, int z, EntityLivingBase e, ItemStack i)
-	{
-		super.onBlockPlacedBy(w, x, y, z, e, i);
-
-		if (i.hasDisplayName())
-		{
-
-		}
-	}
-
-	/**
 	 * Called upon block activation (right click on the block.)
 	 */
 	@Override
@@ -83,10 +73,8 @@ public class BlockPacasAnvil_basic extends BlockContainer implements ITileEntity
 			float par8, float par9) {
 		if (par5EntityPlayer.getHeldItem() == null) {
 			if (!par1World.isRemote) {
-				// Chat Message saying item does not need repair
 				par5EntityPlayer
 				.addChatMessage(new ChatComponentText("Sorry, but your Princess is in Another Castle."));
-
 				par5EntityPlayer.inventoryContainer.detectAndSendChanges();
 			}
 			return false;
@@ -96,38 +84,16 @@ public class BlockPacasAnvil_basic extends BlockContainer implements ITileEntity
 				System.out.println(heldItem + " " + anvilManager.getItemRepairMatID(heldItem));
 				if (par5EntityPlayer.getHeldItem().getItemDamage() == 0) {
 					if (!par1World.isRemote) {
-						// Chat Message saying item does not need repair
-
 						par5EntityPlayer
 						.addChatMessage(new ChatComponentText("That does not need repairing."));	
-
 						par5EntityPlayer.inventoryContainer.detectAndSendChanges();
 					}
 					return false;
 				}
-				if (par5EntityPlayer.inventory.hasItemStack(anvilManager.getItemRepairMatID(heldItem))) {
-					par5EntityPlayer.addPotionEffect(new PotionEffect(2, 40, 127));
-					int maxDam = par5EntityPlayer.getHeldItem()
-							.getMaxDamage();
-					int currDam = par5EntityPlayer.getHeldItem()
-							.getItemDamage();
-					int repairamount = (maxDam / (anvilManager.getItemRepairDivider(heldItem))) + 1;
-					int newDam = currDam - repairamount;
-					String damageword = " a little.";
-					if (newDam < 0) {
-						newDam = 0;
-						damageword = " completely.";
-					}
-					par5EntityPlayer.getHeldItem().setItemDamage(newDam);
-					int size = par5EntityPlayer.inventory.getSizeInventory();
+				if (hasCompatableItemStack(par5EntityPlayer, anvilManager.getItemRepairMatID(heldItem))) {
+					ItemStack repairItem = getCompatableItemStack(par5EntityPlayer, anvilManager.getItemRepairMatID(heldItem));
+					return performRepair(par5EntityPlayer, heldItem, repairItem, par1World);
 
-					consumePlayerInventoryItem(par5EntityPlayer.inventory.mainInventory, anvilManager.getItemRepairMatID(heldItem));
-
-					if (!par1World.isRemote) {
-						par5EntityPlayer.addChatMessage(new ChatComponentText("Repaired your " + (heldItem).getDisplayName() + damageword));
-					}
-					par5EntityPlayer.inventoryContainer.detectAndSendChanges();
-					return true;
 				} else if (par5EntityPlayer.capabilities.isCreativeMode) {
 					int maxDam = par5EntityPlayer.getHeldItem()
 							.getMaxDamage();
@@ -151,32 +117,11 @@ public class BlockPacasAnvil_basic extends BlockContainer implements ITileEntity
 					Block varblock = par1World.getBlock(par2, par3 - 1, par4);
 					if (varblock instanceof BlockChest) {
 						TileEntityChest chest = (TileEntityChest) par1World.getTileEntity(par2, par3 - 1, par4);
-						int size = chest.getSizeInventory();
-						for (int slots = 0; slots < size; ++slots) {
-							if (chest.getStackInSlot(slots) != null) { 
-								if (chest.getStackInSlot(slots).isItemEqual(anvilManager.getItemRepairMatID(heldItem))) {
-									par5EntityPlayer.addPotionEffect(new PotionEffect(2, 40, 127));
-									int maxDam = par5EntityPlayer.getHeldItem()
-											.getMaxDamage();
-									int currDam = par5EntityPlayer.getHeldItem()
-											.getItemDamage();
-									int repairamount = (maxDam / (anvilManager.getItemRepairDivider(heldItem))) + 1;
-									int newDam = currDam - repairamount;
-									String damageword = " a little.";
-									if (newDam < 0) {
-										newDam = 0;
-										damageword = " completely.";
-									}
-									par5EntityPlayer.getHeldItem().setItemDamage(newDam);
-									chest.decrStackSize(slots, 1);
-									if (!par1World.isRemote) {
-										par5EntityPlayer.addChatMessage(new ChatComponentText("Repaired your " + (heldItem).getDisplayName() + damageword));
-									}
-									par5EntityPlayer.inventoryContainer.detectAndSendChanges();
-									return true;
+						
+						if (hasCompatableItemStack(chest, anvilManager.getItemRepairMatID(heldItem))) {
+							ItemStack repairItem = getCompatableItemStack(chest, anvilManager.getItemRepairMatID(heldItem));
+							return performRepair(chest, par5EntityPlayer, heldItem, repairItem, par1World);
 
-								}
-							}
 						}
 						if (!par1World.isRemote) {
 							par5EntityPlayer
@@ -237,6 +182,151 @@ public class BlockPacasAnvil_basic extends BlockContainer implements ITileEntity
 			}
 		}
 		return false;
+	}
+
+
+	private boolean performRepair(EntityPlayer par5EntityPlayer,
+			ItemStack heldItem, ItemStack repairItem, World par1World) {
+
+		par5EntityPlayer.addPotionEffect(new PotionEffect(2, 40, 127));
+		int maxDam = par5EntityPlayer.getHeldItem()
+				.getMaxDamage();
+		int currDam = par5EntityPlayer.getHeldItem()
+				.getItemDamage();
+		int repairamount = (maxDam / (anvilManager.getItemRepairDivider(heldItem))) + 1;
+		int newDam = currDam - repairamount;
+		String damageword = " a little.";
+		if (newDam < 0) {
+			newDam = 0;
+			damageword = " completely.";
+		}
+		par5EntityPlayer.getHeldItem().setItemDamage(newDam);
+		int size = par5EntityPlayer.inventory.getSizeInventory();
+
+		consumePlayerInventoryItem(par5EntityPlayer.inventory.mainInventory, repairItem);
+
+		if (!par1World.isRemote) {
+			par5EntityPlayer.addChatMessage(new ChatComponentText("Repaired your " + (heldItem).getDisplayName() + damageword));
+		}
+		par5EntityPlayer.inventoryContainer.detectAndSendChanges();
+
+		return true;
+	}
+	
+	private boolean performRepair(TileEntityChest chest, EntityPlayer par5EntityPlayer,
+			ItemStack heldItem, ItemStack repairItem, World par1World) {
+
+		int size = chest.getSizeInventory();
+		for (int slots = 0; slots < size; ++slots) {
+			if (chest.getStackInSlot(slots) != null) { 
+				if (chest.getStackInSlot(slots).isItemEqual(repairItem)) {
+					par5EntityPlayer.addPotionEffect(new PotionEffect(2, 40, 127));
+					int maxDam = par5EntityPlayer.getHeldItem()
+							.getMaxDamage();
+					int currDam = par5EntityPlayer.getHeldItem()
+							.getItemDamage();
+					int repairamount = (maxDam / (anvilManager.getItemRepairDivider(heldItem))) + 1;
+					int newDam = currDam - repairamount;
+					String damageword = " a little.";
+					if (newDam < 0) {
+						newDam = 0;
+						damageword = " completely.";
+					}
+					par5EntityPlayer.getHeldItem().setItemDamage(newDam);
+					chest.decrStackSize(slots, 1);
+					if (!par1World.isRemote) {
+						par5EntityPlayer.addChatMessage(new ChatComponentText("Repaired your " + (heldItem).getDisplayName() + damageword));
+					}
+					par5EntityPlayer.inventoryContainer.detectAndSendChanges();
+					return true;
+
+				}
+			}
+		}
+		
+		return true;
+	}
+
+	private boolean hasCompatableItemStack(EntityPlayer par5EntityPlayer,
+			ItemStack itemRepairMatID) {
+
+		int[] ids = OreDictionary.getOreIDs(itemRepairMatID);
+		for (int i = 0; i < ids.length; i++) {
+			String name = OreDictionary.getOreName(ids[i]);
+			ArrayList<ItemStack> items = OreDictionary.getOres(name);
+			for (int j = 0; j < items.size(); j++) {
+				ItemStack item = items.get(j);
+				if (par5EntityPlayer.inventory.hasItemStack(item)) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	private boolean hasCompatableItemStack(TileEntityChest chest,
+			ItemStack itemRepairMatID) {
+
+		int[] ids = OreDictionary.getOreIDs(itemRepairMatID);
+		for (int i = 0; i < ids.length; i++) {
+			String name = OreDictionary.getOreName(ids[i]);
+			ArrayList<ItemStack> items = OreDictionary.getOres(name);
+			for (int j = 0; j < items.size(); j++) {
+				ItemStack item = items.get(j);
+                int size = chest.getSizeInventory();
+				for (int slots = 0; slots < size; ++slots) {
+					if (chest.getStackInSlot(slots) != null) { 
+						if (chest.getStackInSlot(slots).isItemEqual(item)) {
+							return true;
+                        }
+					}
+				}
+			}
+		}
+
+		return false;
+	}
+
+	private ItemStack getCompatableItemStack(EntityPlayer par5EntityPlayer,
+			ItemStack itemRepairMatID) {
+
+		int[] ids = OreDictionary.getOreIDs(itemRepairMatID);
+		for (int i = 0; i < ids.length; i++) {
+			String name = OreDictionary.getOreName(ids[i]);
+			ArrayList<ItemStack> items = OreDictionary.getOres(name);
+			for (int j = 0; j < items.size(); j++) {
+				ItemStack item = items.get(j);
+				if (par5EntityPlayer.inventory.hasItemStack(item)) {
+					return item;
+				}
+			}
+		}
+
+		return null;
+	}
+	
+	private ItemStack getCompatableItemStack(TileEntityChest chest,
+			ItemStack itemRepairMatID) {
+
+		int[] ids = OreDictionary.getOreIDs(itemRepairMatID);
+		for (int i = 0; i < ids.length; i++) {
+			String name = OreDictionary.getOreName(ids[i]);
+			ArrayList<ItemStack> items = OreDictionary.getOres(name);
+			for (int j = 0; j < items.size(); j++) {
+				ItemStack item = items.get(j);
+                int size = chest.getSizeInventory();
+				for (int slots = 0; slots < size; ++slots) {
+					if (chest.getStackInSlot(slots) != null) { 
+						if (chest.getStackInSlot(slots).isItemEqual(item)) {
+							return item;
+                        }
+					}
+				}
+			}
+		}
+
+		return null;
 	}
 
 

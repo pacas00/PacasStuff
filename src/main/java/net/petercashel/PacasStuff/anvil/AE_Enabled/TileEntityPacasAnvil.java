@@ -3,6 +3,7 @@ package net.petercashel.PacasStuff.anvil.AE_Enabled;
 import io.netty.buffer.ByteBuf;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -35,15 +36,67 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.oredict.OreDictionary;
 import net.petercashel.PacasStuff.mod_PacasStuff;
 
 public class TileEntityPacasAnvil extends AnvilAENetBaseTile {
 	
 	public TileEntityPacasAnvil() {
 	}
+	
+	public boolean NetworkHasItemStack(ItemStack itemstack) {
+				if( this.getItemMonitor() )
+				{
+					IAEItemStack request = AEItemStack.create(itemstack);
+					IAEItemStack ItemStack = this.monitor.extractItems( request, Actionable.SIMULATE, new MachineSource( this ) );
+					if( ItemStack == null )
+					{
+						return false;
+					}
+					if (ItemStack.getStackSize() != 0) {
+						return true;	
+					}
+				}
+				return false;
+	}
 
 	public boolean NetworkConsumeItemStack(ItemStack itemstack, EntityPlayer Player, World world) {
 		return extractItemFromNetwork(itemstack, world, Player);
 	}
 
+	public ItemStack FindCompatibleItemStack(ItemStack itemstack) {
+
+			int[] ids = OreDictionary.getOreIDs(itemstack);
+			for (int i = 0; i < ids.length; i++) {
+				String name = OreDictionary.getOreName(ids[i]);
+				ArrayList<ItemStack> items = OreDictionary.getOres(name);
+				for (int j = 0; j < items.size(); j++) {
+					ItemStack item = items.get(j);
+					if (NetworkHasItemStack(item)) {
+						return item;
+					}
+				}
+			}
+
+			return null;
+	}
+	
+	public boolean HasCompatibleItemStack(ItemStack itemstack) {
+
+		int[] ids = OreDictionary.getOreIDs(itemstack);
+		for (int i = 0; i < ids.length; i++) {
+			String name = OreDictionary.getOreName(ids[i]);
+			ArrayList<ItemStack> items = OreDictionary.getOres(name);
+			for (int j = 0; j < items.size(); j++) {
+				ItemStack item = items.get(j);
+				if (NetworkHasItemStack(item)) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+}
+
+	
 }
