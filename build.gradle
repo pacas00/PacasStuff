@@ -27,7 +27,7 @@ def mavenpass = System.getenv("maven_pass") ?: "1"
 def mavenuser = System.getenv("maven_user") ?: "1"
 
 minecraft {
-    version = "1.7.10-10.13.0.1199"
+    version = "1.7.10-10.13.0.1207"
     assetDir = "eclipse/assets"
     
     replaceIn "mod_PacasStuff.java"
@@ -35,7 +35,7 @@ minecraft {
 }
 
 dependencies {
-    compile files('lib/appliedenergistics2-rv0-stable-10-dev.jar');		// AE2 dev version (NEED TO FIND WORK AROUND)
+    compile files('lib/appliedenergistics2-rv1-beta-12-dev.jar');		// AE2 dev version (NEED TO FIND WORK AROUND)
 }
 
 processResources

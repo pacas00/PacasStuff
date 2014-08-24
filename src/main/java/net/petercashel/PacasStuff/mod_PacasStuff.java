@@ -3,12 +3,14 @@ package net.petercashel.PacasStuff;
 import org.apache.logging.log4j.Level;
 
 import net.minecraft.block.Block;
+import net.minecraft.command.ServerCommandManager;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.petercashel.PacasStuff.ModSpecific.AEModPlugin;
@@ -20,6 +22,7 @@ import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 
@@ -28,8 +31,9 @@ public class mod_PacasStuff {
 	
     public static final String DEPENDENCIES = "required-after:Forge@[10.13.0.1198,);after:appliedenergistics2";
 	
-	@Instance("mod_PacasStuff")
+	@Instance(value = "mod_PacasStuff")
 	public static mod_PacasStuff instance;
+	
 	public static final String VERSION = "@VERSION@";
 	public static final String MINECRAFT_VERSION = "[1.7.10]";
 	
@@ -55,7 +59,7 @@ public class mod_PacasStuff {
 	public static final String CATEGORY_GENERAL = "general";
 
 	private net.petercashel.PacasStuff.anvil.AnvilCompatibility AnvilCompat;
-	
+
 	@EventHandler
 	public void load(FMLInitializationEvent event) 
 	{
@@ -156,7 +160,4 @@ public class mod_PacasStuff {
 		System.out.println("[PacasStuff] Anvil Compatiblity Checks Complete.");
 
 	}
-	
-	
-
 }
