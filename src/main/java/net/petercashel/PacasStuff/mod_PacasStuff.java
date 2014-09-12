@@ -16,6 +16,7 @@ import net.minecraftforge.common.config.Configuration;
 import net.petercashel.PacasStuff.ModSpecific.AEModPlugin;
 import net.petercashel.PacasStuff.anvil.BlockPacasAnvil_basic;
 import net.petercashel.PacasStuff.anvil.anvilManager;
+import net.petercashel.PacasStuff.command.HQMEditToggle;
 import cpw.mods.fml.common.*;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -59,6 +60,10 @@ public class mod_PacasStuff {
 	public static final String CATEGORY_GENERAL = "general";
 
 	private net.petercashel.PacasStuff.anvil.AnvilCompatibility AnvilCompat;
+
+	private MinecraftServer server;
+
+	private HQMEditToggle HQMEditToggleCMD;
 
 	@EventHandler
 	public void load(FMLInitializationEvent event) 
@@ -158,6 +163,14 @@ public class mod_PacasStuff {
     		AEModPlugin.recipes();
     	}
 		System.out.println("[PacasStuff] Anvil Compatiblity Checks Complete.");
-
+	}
+	
+	@EventHandler
+	public void ServerStarting(FMLServerStartingEvent event) 
+	{
+		server = MinecraftServer.getServer();
+		ServerCommandManager commands = (ServerCommandManager) server.getCommandManager();
+		HQMEditToggleCMD = new HQMEditToggle();
+		commands.registerCommand(HQMEditToggleCMD);
 	}
 }
