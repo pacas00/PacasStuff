@@ -1,6 +1,12 @@
 package net.petercashel.PacasStuff;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 import org.apache.logging.log4j.Level;
+
+import com.google.common.collect.Maps;
 
 import net.minecraft.block.Block;
 import net.minecraft.command.ServerCommandManager;
@@ -11,8 +17,21 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.BiomeGenMutated;
+import net.minecraftforge.common.BiomeManager;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.petercashel.PacasStuff.DIM_Common.BlockPortalFire;
+import net.petercashel.PacasStuff.DIM_Redlands.BiomeGenRedlands;
+import net.petercashel.PacasStuff.DIM_Redlands.BlockRedlandsPortal;
+import net.petercashel.PacasStuff.DIM_Redlands.WorldProviderRedlands;
+import net.petercashel.PacasStuff.DIM_WOP.BiomeGenWOP;
+import net.petercashel.PacasStuff.DIM_WOP.BlockWOPPortal;
+import net.petercashel.PacasStuff.DIM_WOP.WorldProviderWOP;
 import net.petercashel.PacasStuff.ModSpecific.AEModPlugin;
 import net.petercashel.PacasStuff.anvil.BlockPacasAnvil_basic;
 import net.petercashel.PacasStuff.anvil.anvilManager;
@@ -27,12 +46,13 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 
-@Mod(modid = "mod_pacasstuff", name = "PacasStuff", version = mod_PacasStuff.VERSION, acceptedMinecraftVersions = mod_PacasStuff.MINECRAFT_VERSION, dependencies = mod_PacasStuff.DEPENDENCIES)
+@Mod(modid = mod_PacasStuff.MOD_ID, name = "PacasStuff", version = mod_PacasStuff.VERSION, acceptedMinecraftVersions = mod_PacasStuff.MINECRAFT_VERSION, dependencies = mod_PacasStuff.DEPENDENCIES)
 public class mod_PacasStuff {
 	
     public static final String DEPENDENCIES = "required-after:Forge@[10.13.0.1198,);after:appliedenergistics2";
 	
 	@Instance(value = "mod_PacasStuff")
+	public static final String MOD_ID = "mod_pacasstuff";
 	public static mod_PacasStuff instance;
 	
 	public static final String VERSION = "@VERSION@";
@@ -51,6 +71,7 @@ public class mod_PacasStuff {
 	public static Block PacasAnvil;
 	public static Block PacasAnvil_Basic;
 	public static Item ItemPacasAnvilTool;
+	public static Item ItemFireTool;
 
 	public static boolean CompatEnable;
 	public static boolean CompatIC2;
@@ -64,7 +85,35 @@ public class mod_PacasStuff {
 	private MinecraftServer server;
 
 	private HQMEditToggle HQMEditToggleCMD;
+	
+	/** Dimensions **/
+	public static int DIM_ID_WOP;
+	public static int DIM_ID_Redlands;
+	
+	/** Biomes **/
+	public static int BiomeID_WOP;
+	public static BiomeGenBase WOP = null;
+	
+	public static int BiomeID_Redlands;
+	public static BiomeGenBase Redlands = null;
+	
+	/** Mutated **/
+	public static int BiomeID_WOPM;
+	public static BiomeGenBase WOPM = null;
+	
+	public static int BiomeID_RedlandsM;
+	public static BiomeGenBase RedlandsM = null;
 
+
+	public static BlockWOPPortal WOPPortal;
+	public static Block WOPPortalFrame = Blocks.emerald_block;
+	public static BlockPortalFire PortalFire;
+
+	public static BlockRedlandsPortal RedlandsPortal;
+	public static Block RedlandsPortalFrame = Blocks.nether_brick;
+	
+
+	
 	@EventHandler
 	public void load(FMLInitializationEvent event) 
 	{
@@ -73,6 +122,19 @@ public class mod_PacasStuff {
 		proxy.registerTileEntities();
 		System.out.println("[PacasStuff] Loaded.");
 		FMLLog.log("PacasStuff", Level.INFO, "Mod Has Loaded [PacasStuff]");
+		
+		this.recipes();
+	}
+
+
+	public void recipes() {
+		GameRegistry.addRecipe(new ItemStack(ItemFireTool, 1), new Object[] {
+			" T ", "WNB", " R ",
+			Character.valueOf('N'), Items.nether_star,
+			Character.valueOf('W'), Blocks.planks,
+			Character.valueOf('R'), Items.redstone,
+			Character.valueOf('T'), Blocks.redstone_torch
+		});	
 	}
 
 
@@ -87,6 +149,20 @@ public class mod_PacasStuff {
 			CompatEnable = cfg.get(CATEGORY_GENERAL, "CompatEnable", true).getBoolean(true);
 			CompatIC2 = cfg.get(CATEGORY_GENERAL, "CompatIC2", true).getBoolean(true);
 			CompatTE4 = cfg.get(CATEGORY_GENERAL, "CompatTE3", true).getBoolean(true);
+			
+			BiomeID_WOP = cfg.get(CATEGORY_GENERAL, "BiomeID_WOP", 100).getInt(100);
+			BiomeID_WOPM = cfg.get(CATEGORY_GENERAL, "BiomeID_WOPM", 228).getInt(228);
+			WOP = new BiomeGenWOP(BiomeID_WOP).setBiomeName("WOP").setColor(0x66AD2D).setHeight(BiomeGenWOP.height_WOP);
+			WOPM = new BiomeGenMutated(BiomeID_WOPM, WOP).setBiomeName("WOPM");
+			
+			BiomeID_Redlands = cfg.get(CATEGORY_GENERAL, "BiomeID_Redlands", 101).getInt(101);
+			BiomeID_RedlandsM = cfg.get(CATEGORY_GENERAL, "BiomeID_RedlandsM", 229).getInt(229);
+			Redlands = new BiomeGenRedlands(BiomeID_Redlands).setBiomeName("Redlands").setColor(0x66AD2D).setHeight(BiomeGenRedlands.height_Redlands);
+			RedlandsM = new BiomeGenMutated(BiomeID_RedlandsM, Redlands).setBiomeName("RedlandsM");
+			
+			
+			DIM_ID_WOP = cfg.get(CATEGORY_GENERAL, "DIM_ID_WOP", 128).getInt(128);
+			DIM_ID_Redlands = cfg.get(CATEGORY_GENERAL, "DIM_ID_Redlands", 129).getInt(129);
 
 
 			
@@ -115,9 +191,18 @@ public class mod_PacasStuff {
     	
     	ItemPacasAnvilTool = new net.petercashel.PacasStuff.anvil.ItemPacasAnvilTool().setMaxStackSize(1).setUnlocalizedName("ItemPacasAnvilTool");
 		GameRegistry.registerItem(ItemPacasAnvilTool, "ItemPacasAnvilTool");
-
 		
+		ItemFireTool = new net.petercashel.PacasStuff.DIM_Common.ItemFireTool().setMaxStackSize(1).setUnlocalizedName("ItemFireTool");
+		GameRegistry.registerItem(ItemFireTool, "ItemFireTool");
 
+		WOPPortal = new BlockWOPPortal("WOPPortal");
+		GameRegistry.registerBlock(WOPPortal, WOPPortal.getLocalizedName());
+		
+		PortalFire = new BlockPortalFire("WOPPortalFire");
+		GameRegistry.registerBlock(PortalFire, PortalFire.getLocalizedName());
+		
+		RedlandsPortal = new BlockRedlandsPortal("RedlandsPortal");
+		GameRegistry.registerBlock(RedlandsPortal, RedlandsPortal.getLocalizedName());
 	}
 
 	@EventHandler
@@ -126,6 +211,32 @@ public class mod_PacasStuff {
 		anvilManager.Load();
 
 		addToAnvilManager();
+		
+		BiomeManager.addVillageBiome(this.WOP, true);
+		BiomeManager.addVillageBiome(this.WOPM, true);
+		BiomeManager.addVillageBiome(this.Redlands, true);
+		BiomeManager.addVillageBiome(this.RedlandsM, true);
+		
+		/**Register WorldProvider for Dimension **/
+		DimensionManager.registerProviderType(this.DIM_ID_WOP, WorldProviderWOP.class, true);
+		DimensionManager.registerDimension(this.DIM_ID_WOP, this.DIM_ID_WOP);
+		
+		DimensionManager.registerProviderType(this.DIM_ID_Redlands, WorldProviderRedlands.class, true);
+		DimensionManager.registerDimension(this.DIM_ID_Redlands, this.DIM_ID_Redlands);
+		
+	}
+	
+	@EventHandler
+	public void postinit(FMLInitializationEvent event){
+		
+		HashMap<String, Fluid> map = Maps.newHashMap();
+		map.putAll(FluidRegistry.getRegisteredFluids());
+		Iterator i = map.keySet().iterator();
+		while (i.hasNext()) {
+			String str = (String) i.next();
+			System.out.println(str);
+			i.remove();
+		}
 	}
 
 	public void addToAnvilManager() {
