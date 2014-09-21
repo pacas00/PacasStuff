@@ -19,11 +19,13 @@ import net.minecraft.util.Direction;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.petercashel.PacasStuff.mod_PacasStuff;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemMonsterPlacer;
 
-public class BlockWOPPortal extends BlockBreakable {
-
+public class BlockWOPPortal extends BlockBreakable
+{
 	public static final int[][] field_150001_a = new int[][] {new int[0], {3, 1}, {2, 0}};
-
+    
 	public BlockWOPPortal(String blockName)
 	{
 		super("pacas_stuff" + ":" + "WOPPortal", Material.portal, false);
@@ -37,34 +39,16 @@ public class BlockWOPPortal extends BlockBreakable {
 	/**
 	 * Ticks the block if it's been scheduled
 	 */
-
-	public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
+	public void updateTick(World p_149674_1_, int p_149674_2_, int p_149674_3_, int p_149674_4_, Random p_149674_5_)
 	{
-		super.updateTick(par1World, par2, par3, par4, par5Random);
-		if (par1World.provider.isSurfaceWorld() && par1World.getGameRules().getGameRuleBooleanValue("doMobSpawning") && par5Random.nextInt(2000) < par1World.difficultySetting.getDifficultyId())
-		{
-			int l;
-			for (l = par3; !par1World.doesBlockHaveSolidTopSurface(par1World, par2, 1, par4) && l > 0; --l)
-			{
-				;
-			}
-			if (l > 0 && !par1World.getBlock(par2, l + 1, par4).isNormalCube())
-			{
-				Entity entity = ItemMonsterPlacer.spawnCreature(par1World, 57, (double)par2 + 0.5D, (double)l + 1.1D, (double)par4 + 0.5D);
-				if (entity != null)
-				{
-					entity.timeUntilPortal = entity.getPortalCooldown();
-				}
-			}
-		}
+		super.updateTick(p_149674_1_, p_149674_2_, p_149674_3_, p_149674_4_, p_149674_5_);
 	}
 
 	/**
 	 * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
 	 * cleared to be reused)
 	 */
-
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
+	public AxisAlignedBB getCollisionBoundingBoxFromPool(World p_149668_1_, int p_149668_2_, int p_149668_3_, int p_149668_4_)
 	{
 		return null;
 	}
@@ -72,187 +56,138 @@ public class BlockWOPPortal extends BlockBreakable {
 	/**
 	 * Updates the blocks bounds based on its current state. Args: world, x, y, z
 	 */
-
-	public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
+	public void setBlockBoundsBasedOnState(IBlockAccess p_149719_1_, int p_149719_2_, int p_149719_3_, int p_149719_4_)
 	{
-		float f;
-		float f1;
-		if (par1IBlockAccess.getBlock(par2 - 1, par3, par4) != this && par1IBlockAccess.getBlock(par2 + 1, par3, par4) != this)
+		int l = func_149999_b(p_149719_1_.getBlockMetadata(p_149719_2_, p_149719_3_, p_149719_4_));
+
+		if (l == 0)
 		{
-			f = 0.125F;
-			f1 = 0.5F;
-			this.setBlockBounds(0.5F - f, 0.0F, 0.5F - f1, 0.5F + f, 1.0F, 0.5F + f1);
+			if (p_149719_1_.getBlock(p_149719_2_ - 1, p_149719_3_, p_149719_4_) != this && p_149719_1_.getBlock(p_149719_2_ + 1, p_149719_3_, p_149719_4_) != this)
+			{
+				l = 2;
+			}
+			else
+			{
+				l = 1;
+			}
+
+			if (p_149719_1_ instanceof World && !((World)p_149719_1_).isRemote)
+			{
+				((World)p_149719_1_).setBlockMetadataWithNotify(p_149719_2_, p_149719_3_, p_149719_4_, l, 2);
+			}
 		}
-		else
+
+		float f = 0.125F;
+		float f1 = 0.125F;
+
+		if (l == 1)
 		{
 			f = 0.5F;
-			f1 = 0.125F;
-			this.setBlockBounds(0.5F - f, 0.0F, 0.5F - f1, 0.5F + f, 1.0F, 0.5F + f1);
 		}
-	}
 
-	/**
-	 * Is this block (a) opaque and (B) a full 1m cube? This determines whether or not to render the shared face of two
-	 * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-	 */
+		if (l == 2)
+		{
+			f1 = 0.5F;
+		}
 
-	public boolean isOpaqueCube()
-	{
-		return false;
+		this.setBlockBounds(0.5F - f, 0.0F, 0.5F - f1, 0.5F + f, 1.0F, 0.5F + f1);
 	}
 
 	/**
 	 * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
 	 */
-	@Override
 	public boolean renderAsNormalBlock()
 	{
 		return false;
 	}
 
-//	/**
-//	 * Checks to see if this location is valid to create a portal and will return True if it does. Args: world, x, y, z
-//	 */
-//	public boolean tryToCreatePortal(World par1World, int par2, int par3, int par4)
-//	{
-//		byte b0 = 0;
-//		byte b1 = 0;
-//		if (par1World.getBlock(par2 - 1, par3, par4) == mod_PacasStuff.WOPPortalFrame || par1World.getBlock(par2 + 1, par3, par4) == mod_PacasStuff.WOPPortalFrame)
-//		{
-//			b0 = 1;
-//		}
-//		if (par1World.getBlock(par2, par3, par4 - 1) == mod_PacasStuff.WOPPortalFrame || par1World.getBlock(par2, par3, par4 + 1) == mod_PacasStuff.WOPPortalFrame)
-//		{
-//			b1 = 1;
-//		}
-//		if (b0 == b1)
-//		{
-//			return false;
-//		}
-//		else
-//		{
-//			if (par1World.getBlock(par2 - b0, par3, par4 - b1) == null)
-//			{
-//				par2 -= b0;
-//				par4 -= b1;
-//			}
-//			int l;
-//			int i1;
-//			for (l = -1; l <= 2; ++l)
-//			{
-//				for (i1 = -1; i1 <= 3; ++i1)
-//				{
-//					boolean flag = l == -1 || l == 2 || i1 == -1 || i1 == 3;
-//					if (l != -1 && l != 2 || i1 != -1 && i1 != 3)
-//					{
-//						Block j1 = par1World.getBlock(par2 + b0 * l, par3 + i1, par4 + b1 * l);
-//						if (flag)
-//						{
-//							if (j1 != mod_PacasStuff.WOPPortalFrame)
-//							{
-//								return false;
-//							}
-//						}
-//						else if (j1 != null && j1 != mod_PacasStuff.WOPPortalFire)
-//						{
-//							return false;
-//						}
-//					}
-//				}
-//			}
-//			for (l = 0; l < 2; ++l)
-//			{
-//				for (i1 = 0; i1 < 3; ++i1)
-//				{
-//					par1World.setBlock(par2 + b0 * l, par3 + i1, par4 + b1 * l, mod_PacasStuff.WOPPortal, 0, 2);
-//				}
-//			}
-//			return true;
-//		}
-//	}
-
-	/**
-	 * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
-	 * their own) Args: x, y, z, neighbor blockID
-	 */
-	@Override
-	public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, Block par5_)
+	public boolean func_150000_e(World p_150000_1_, int p_150000_2_, int p_150000_3_, int p_150000_4_)
 	{
-		byte b0 = 0;
-		byte b1 = 1;
-		if (par1World.getBlock(par2 - 1, par3, par4) == this || par1World.getBlock(par2 + 1, par3, par4) == this)
+		BlockWOPPortal.Size size = new BlockWOPPortal.Size(p_150000_1_, p_150000_2_, p_150000_3_, p_150000_4_, 1);
+		BlockWOPPortal.Size size1 = new BlockWOPPortal.Size(p_150000_1_, p_150000_2_, p_150000_3_, p_150000_4_, 2);
+
+		if (size.func_150860_b() && size.field_150864_e == 0)
 		{
-			b0 = 1;
-			b1 = 0;
+			size.func_150859_c();
+			return true;
 		}
-		int i1;
-		for (i1 = par3; par1World.getBlock(par2, i1 - 1, par4) == this; --i1)
+		else if (size1.func_150860_b() && size1.field_150864_e == 0)
 		{
-			;
-		}
-		if (par1World.getBlock(par2, i1 - 1, par4) != mod_PacasStuff.WOPPortalFrame)
-		{
-			par1World.setBlockToAir(par2, par3, par4);
+			size1.func_150859_c();
+			return true;
 		}
 		else
-		{
-			int j1;
-			for (j1 = 1; j1 < 4 && par1World.getBlock(par2, i1 + j1, par4) == this; ++j1)
-			{
-				;
-			}
-			if (j1 == 3 && par1World.getBlock(par2, i1 + j1, par4) == mod_PacasStuff.WOPPortalFrame)
-			{
-				boolean flag = par1World.getBlock(par2 - 1, par3, par4) == this || par1World.getBlock(par2 + 1, par3, par4) == this;
-				boolean flag1 = par1World.getBlock(par2, par3, par4 - 1) == this || par1World.getBlock(par2, par3, par4 + 1) == this;
-				if (flag && flag1)
-				{
-					par1World.setBlockToAir(par2, par3, par4);
-				}
-				else
-				{
-					if ((par1World.getBlock(par2 + b0, par3, par4 + b1) != mod_PacasStuff.WOPPortalFrame || par1World.getBlock(par2 - b0, par3, par4 - b1) != this) && (par1World.getBlock(par2 - b0, par3, par4 - b1) != mod_PacasStuff.WOPPortalFrame || par1World.getBlock(par2 + b0, par3, par4 + b1) != this))
-					{
-						par1World.setBlockToAir(par2, par3, par4);
-					}
-				}
-			}
-			else
-			{
-				par1World.setBlockToAir(par2, par3, par4);
-			}
-		}
-	}
-
-	@SideOnly(Side.CLIENT)
-	/**
-	 * Returns true if the given side of this block type should be rendered, if the adjacent block is at the given
-	 * coordinates. Args: blockAccess, x, y, z, side
-	 */
-
-	public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
-	{
-		if (par1IBlockAccess.getBlock(par2, par3, par4) == this)
 		{
 			return false;
 		}
-		else
+	}
+
+	/**
+	 * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
+	 * their own) Args: x, y, z, neighbor Block
+	 */
+	public void onNeighborBlockChange(World p_149695_1_, int p_149695_2_, int p_149695_3_, int p_149695_4_, Block p_149695_5_)
+	{
+		int l = func_149999_b(p_149695_1_.getBlockMetadata(p_149695_2_, p_149695_3_, p_149695_4_));
+		BlockWOPPortal.Size size = new BlockWOPPortal.Size(p_149695_1_, p_149695_2_, p_149695_3_, p_149695_4_, 1);
+		BlockWOPPortal.Size size1 = new BlockWOPPortal.Size(p_149695_1_, p_149695_2_, p_149695_3_, p_149695_4_, 2);
+
+		if (l == 1 && (!size.func_150860_b() || size.field_150864_e < size.field_150868_h * size.field_150862_g))
 		{
-			boolean flag = par1IBlockAccess.getBlock(par2 - 1, par3, par4) == this && par1IBlockAccess.getBlock(par2 - 2, par3, par4) != this;
-			boolean flag1 = par1IBlockAccess.getBlock(par2 + 1, par3, par4) == this && par1IBlockAccess.getBlock(par2 + 2, par3, par4) != this;
-			boolean flag2 = par1IBlockAccess.getBlock(par2, par3, par4 - 1) == this && par1IBlockAccess.getBlock(par2, par3, par4 - 2) != this;
-			boolean flag3 = par1IBlockAccess.getBlock(par2, par3, par4 + 1) == this && par1IBlockAccess.getBlock(par2, par3, par4 + 2) != this;
-			boolean flag4 = flag || flag1;
-			boolean flag5 = flag2 || flag3;
-			return flag4 && par5 == 4 ? true : (flag4 && par5 == 5 ? true : (flag5 && par5 == 2 ? true : flag5 && par5 == 3));
+			p_149695_1_.setBlock(p_149695_2_, p_149695_3_, p_149695_4_, Blocks.air);
 		}
+		else if (l == 2 && (!size1.func_150860_b() || size1.field_150864_e < size1.field_150868_h * size1.field_150862_g))
+		{
+			p_149695_1_.setBlock(p_149695_2_, p_149695_3_, p_149695_4_, Blocks.air);
+		}
+		else if (l == 0 && !size.func_150860_b() && !size1.func_150860_b())
+		{
+			p_149695_1_.setBlock(p_149695_2_, p_149695_3_, p_149695_4_, Blocks.air);
+		}
+	}
+
+	/**
+	 * Returns true if the given side of this block type should be rendered, if the adjacent block is at the given
+	 * coordinates.  Args: blockAccess, x, y, z, side
+	 */
+	@SideOnly(Side.CLIENT)
+	public boolean shouldSideBeRendered(IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_)
+	{
+		int i1 = 0;
+
+		if (p_149646_1_.getBlock(p_149646_2_, p_149646_3_, p_149646_4_) == this)
+		{
+			i1 = func_149999_b(p_149646_1_.getBlockMetadata(p_149646_2_, p_149646_3_, p_149646_4_));
+
+			if (i1 == 0)
+			{
+				return false;
+			}
+
+			if (i1 == 2 && p_149646_5_ != 5 && p_149646_5_ != 4)
+			{
+				return false;
+			}
+
+			if (i1 == 1 && p_149646_5_ != 3 && p_149646_5_ != 2)
+			{
+				return false;
+			}
+		}
+
+		boolean flag = p_149646_1_.getBlock(p_149646_2_ - 1, p_149646_3_, p_149646_4_) == this && p_149646_1_.getBlock(p_149646_2_ - 2, p_149646_3_, p_149646_4_) != this;
+		boolean flag1 = p_149646_1_.getBlock(p_149646_2_ + 1, p_149646_3_, p_149646_4_) == this && p_149646_1_.getBlock(p_149646_2_ + 2, p_149646_3_, p_149646_4_) != this;
+		boolean flag2 = p_149646_1_.getBlock(p_149646_2_, p_149646_3_, p_149646_4_ - 1) == this && p_149646_1_.getBlock(p_149646_2_, p_149646_3_, p_149646_4_ - 2) != this;
+		boolean flag3 = p_149646_1_.getBlock(p_149646_2_, p_149646_3_, p_149646_4_ + 1) == this && p_149646_1_.getBlock(p_149646_2_, p_149646_3_, p_149646_4_ + 2) != this;
+		boolean flag4 = flag || flag1 || i1 == 1;
+		boolean flag5 = flag2 || flag3 || i1 == 2;
+		return flag4 && p_149646_5_ == 4 ? true : (flag4 && p_149646_5_ == 5 ? true : (flag5 && p_149646_5_ == 2 ? true : flag5 && p_149646_5_ == 3));
 	}
 
 	/**
 	 * Returns the quantity of items to drop on block destruction.
 	 */
-
-	public int quantityDropped(Random par1Random)
+	public int quantityDropped(Random p_149745_1_)
 	{
 		return 0;
 	}
@@ -281,83 +216,66 @@ public class BlockWOPPortal extends BlockBreakable {
 		}
 	}
 
-	@SideOnly(Side.CLIENT)
 	/**
 	 * Returns which pass should this block be rendered on. 0 for solids and 1 for alpha
 	 */
+	@SideOnly(Side.CLIENT)
 	public int getRenderBlockPass()
 	{
 		return 1;
 	}
 
-	@SideOnly(Side.CLIENT)
 	/**
 	 * A randomly called display update to be able to add particles or other items for display
 	 */
-	public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random)
+	@SideOnly(Side.CLIENT)
+	public void randomDisplayTick(World p_149734_1_, int p_149734_2_, int p_149734_3_, int p_149734_4_, Random p_149734_5_)
 	{
-		if (par5Random.nextInt(100) == 0)
+		if (p_149734_5_.nextInt(100) == 0)
 		{
-			par1World.playSound((double)par2 + 0.5D, (double)par3 + 0.5D, (double)par4 + 0.5D, "portal.portal", 0.5F, par5Random.nextFloat() * 0.4F + 0.8F, false);
+			//p_149734_1_.playSound((double)p_149734_2_ + 0.5D, (double)p_149734_3_ + 0.5D, (double)p_149734_4_ + 0.5D, "portal.portal", 0.5F, p_149734_5_.nextFloat() * 0.4F + 0.8F, false);
 		}
+
 		for (int l = 0; l < 4; ++l)
 		{
-			double d0 = (double)((float)par2 + par5Random.nextFloat());
-			double d1 = (double)((float)par3 + par5Random.nextFloat());
-			double d2 = (double)((float)par4 + par5Random.nextFloat());
+			double d0 = (double)((float)p_149734_2_ + p_149734_5_.nextFloat());
+			double d1 = (double)((float)p_149734_3_ + p_149734_5_.nextFloat());
+			double d2 = (double)((float)p_149734_4_ + p_149734_5_.nextFloat());
 			double d3 = 0.0D;
 			double d4 = 0.0D;
 			double d5 = 0.0D;
-			int i1 = par5Random.nextInt(2) * 2 - 1;
-			d3 = ((double)par5Random.nextFloat() - 0.5D) * 0.5D;
-			d4 = ((double)par5Random.nextFloat() - 0.5D) * 0.5D;
-			d5 = ((double)par5Random.nextFloat() - 0.5D) * 0.5D;
-			if (par1World.getBlock(par2 - 1, par3, par4) != this && par1World.getBlock(par2 + 1, par3, par4) != this)
+			int i1 = p_149734_5_.nextInt(2) * 2 - 1;
+			d3 = ((double)p_149734_5_.nextFloat() - 0.5D) * 0.5D;
+			d4 = ((double)p_149734_5_.nextFloat() - 0.5D) * 0.5D;
+			d5 = ((double)p_149734_5_.nextFloat() - 0.5D) * 0.5D;
+
+			if (p_149734_1_.getBlock(p_149734_2_ - 1, p_149734_3_, p_149734_4_) != this && p_149734_1_.getBlock(p_149734_2_ + 1, p_149734_3_, p_149734_4_) != this)
 			{
-				d0 = (double)par2 + 0.5D + 0.25D * (double)i1;
-				d3 = (double)(par5Random.nextFloat() * 2.0F * (float)i1);
+				d0 = (double)p_149734_2_ + 0.5D + 0.25D * (double)i1;
+				d3 = (double)(p_149734_5_.nextFloat() * 2.0F * (float)i1);
 			}
 			else
 			{
-				d2 = (double)par4 + 0.5D + 0.25D * (double)i1;
-				d5 = (double)(par5Random.nextFloat() * 2.0F * (float)i1);
+				d2 = (double)p_149734_4_ + 0.5D + 0.25D * (double)i1;
+				d5 = (double)(p_149734_5_.nextFloat() * 2.0F * (float)i1);
 			}
-			par1World.spawnParticle("portal", d0, d1, d2, d3, d4, d5);
+
+			//p_149734_1_.spawnParticle("portal", d0, d1, d2, d3, d4, d5);
 		}
 	}
 
-	@SideOnly(Side.CLIENT)
+	public static int func_149999_b(int p_149999_0_)
+	{
+		return p_149999_0_ & 3;
+	}
+
 	/**
-	 * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
+	 * Gets an item for the block being called on. Args: world, x, y, z
 	 */
-	public int idPicked(World par1World, int par2, int par3, int par4)
+	@SideOnly(Side.CLIENT)
+	public Item getItem(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_)
 	{
-		return 0;
-	}
-
-	public boolean getSize(World par1World, int par2, int par3, int par4) {
-		return false;
-	}
-
-	public boolean func_150000_e(World p_150000_1_, int p_150000_2_, int p_150000_3_, int p_150000_4_)
-	{
-		BlockWOPPortal.Size size = new BlockWOPPortal.Size(p_150000_1_, p_150000_2_, p_150000_3_, p_150000_4_, 1);
-		BlockWOPPortal.Size size1 = new BlockWOPPortal.Size(p_150000_1_, p_150000_2_, p_150000_3_, p_150000_4_, 2);
-
-		if (size.func_150860_b() && size.field_150864_e == 0)
-		{
-			size.func_150859_c();
-			return true;
-		}
-		else if (size1.func_150860_b() && size.field_150864_e == 0)
-		{
-			size1.func_150859_c();
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		return Item.getItemById(0);
 	}
 
 	public static class Size
@@ -366,7 +284,7 @@ public class BlockWOPPortal extends BlockBreakable {
 		private final int field_150865_b;
 		private final int field_150866_c;
 		private final int field_150863_d;
-		public int field_150864_e = 0;
+		private int field_150864_e = 0;
 		private ChunkCoordinates field_150861_f;
 		private int field_150862_g;
 		private int field_150868_h;
@@ -422,14 +340,14 @@ public class BlockWOPPortal extends BlockBreakable {
 
 				Block block1 = this.field_150867_a.getBlock(p_150853_1_ + j1 * i1, p_150853_2_ - 1, p_150853_3_ + k1 * i1);
 
-				if (block1 != mod_PacasStuff.WOPPortalFrame) //FRAME
+				if (block1 != mod_PacasStuff.WOPPortalFrame)
 				{
 					break;
 				}
 			}
 
 			block = this.field_150867_a.getBlock(p_150853_1_ + j1 * i1, p_150853_2_, p_150853_3_ + k1 * i1);
-			return block == mod_PacasStuff.WOPPortalFrame ? i1 : 0;  //FRAME
+			return block == mod_PacasStuff.WOPPortalFrame ? i1 : 0;
 		}
 
 		protected int func_150858_a()
@@ -455,7 +373,7 @@ public class BlockWOPPortal extends BlockBreakable {
 							break label56;
 						}
 
-						if (block == mod_PacasStuff.WOPPortal)  //PORTAL
+						if (block == mod_PacasStuff.WOPPortal)
 						{
 							++this.field_150864_e;
 						}
@@ -464,7 +382,7 @@ public class BlockWOPPortal extends BlockBreakable {
 						{
 							block = this.field_150867_a.getBlock(k + Direction.offsetX[BlockWOPPortal.field_150001_a[this.field_150865_b][0]], i, l + Direction.offsetZ[BlockWOPPortal.field_150001_a[this.field_150865_b][0]]);
 
-							if (block != mod_PacasStuff.WOPPortalFrame)  //FRAME
+							if (block != mod_PacasStuff.WOPPortalFrame)
 							{
 								break label56;
 							}
@@ -473,7 +391,7 @@ public class BlockWOPPortal extends BlockBreakable {
 						{
 							block = this.field_150867_a.getBlock(k + Direction.offsetX[BlockWOPPortal.field_150001_a[this.field_150865_b][1]], i, l + Direction.offsetZ[BlockWOPPortal.field_150001_a[this.field_150865_b][1]]);
 
-							if (block != mod_PacasStuff.WOPPortalFrame)  //FRAME
+							if (block != mod_PacasStuff.WOPPortalFrame)
 							{
 								break label56;
 							}
@@ -487,7 +405,7 @@ public class BlockWOPPortal extends BlockBreakable {
 				k = this.field_150861_f.posY + this.field_150862_g;
 				l = this.field_150861_f.posZ + i * Direction.offsetZ[BlockWOPPortal.field_150001_a[this.field_150865_b][1]];
 
-				if (this.field_150867_a.getBlock(j, k, l) != mod_PacasStuff.WOPPortalFrame)  //FRAME
+				if (this.field_150867_a.getBlock(j, k, l) != mod_PacasStuff.WOPPortalFrame)
 				{
 					this.field_150862_g = 0;
 					break;
@@ -509,7 +427,7 @@ public class BlockWOPPortal extends BlockBreakable {
 
 		protected boolean func_150857_a(Block p_150857_1_)
 		{
-			return p_150857_1_.getMaterial() == Material.air || p_150857_1_ == mod_PacasStuff.PortalFire || p_150857_1_ == mod_PacasStuff.WOPPortal; 
+			return p_150857_1_.getMaterial() == Material.air || p_150857_1_ == mod_PacasStuff.PortalFire || p_150857_1_ == mod_PacasStuff.WOPPortal;
 		}
 
 		public boolean func_150860_b()
@@ -527,10 +445,9 @@ public class BlockWOPPortal extends BlockBreakable {
 				for (int l = 0; l < this.field_150862_g; ++l)
 				{
 					int i1 = this.field_150861_f.posY + l;
-					this.field_150867_a.setBlock(j, i1, k, mod_PacasStuff.WOPPortal, this.field_150865_b, 2);  //FRAME
+					this.field_150867_a.setBlock(j, i1, k, mod_PacasStuff.WOPPortal, this.field_150865_b, 2);
 				}
 			}
 		}
 	}
-
 }

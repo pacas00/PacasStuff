@@ -65,6 +65,8 @@ public class BlockPortalFire extends BlockFire {
 		Blocks.fire.func_149842_a(getIdFromBlock(Blocks.coal_block), 5, 5);
 		Blocks.fire.func_149842_a(getIdFromBlock(Blocks.hay_block), 60, 20);
 		Blocks.fire.func_149842_a(getIdFromBlock(Blocks.carpet), 60, 20);
+
+		Blocks.fire.func_149842_a(Block.getIdFromBlock(Blocks.fire), 1, 1);
 	}
 
 	@Override
