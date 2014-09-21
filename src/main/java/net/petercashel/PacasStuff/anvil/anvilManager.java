@@ -32,9 +32,6 @@ import net.minecraftforge.oredict.*;
  */
 public class anvilManager {
 
-	private static Hashtable<ItemStack, ItemStack> toolList = new Hashtable<ItemStack, ItemStack>();
-	private static Hashtable<ItemStack, Integer> toolDivider = new Hashtable<ItemStack, Integer>();
-
 	protected static List<Anvil_ItemData> anvilList = new ArrayList<Anvil_ItemData>();
 
 	//Anvil_ItemData
@@ -46,8 +43,6 @@ public class anvilManager {
 	public static void registerItem(ItemStack par1Item, ItemStack par2Item, int par3) {
 		boolean isInManager = isInAnvilManager(par1Item);
 		if (isInManager == false) {
-			toolList.put(par1Item, par2Item);
-			toolDivider.put(par1Item, par3);
 
 			Anvil_ItemData data = null;
 			try {
@@ -73,10 +68,6 @@ public class anvilManager {
 	 */
 	public static void registerItem(ItemStack par1Item, Block par2Block, int par3) {
 		boolean isInManager = isInAnvilManager(par1Item);
-		if (isInManager == false) {
-			toolList.put(par1Item,  new ItemStack(par2Block));
-			toolDivider.put(par1Item, par3);
-		}
 
 		Anvil_ItemData data = null;
 		try {
@@ -101,10 +92,6 @@ public class anvilManager {
 	 */
 	public static void unregisterItem(ItemStack par1Item) {
 		boolean isInManager = isInAnvilManager(par1Item);
-		if (isInManager == true) {
-			toolList.remove(par1Item);
-			toolDivider.remove(par1Item);
-		}
 
 		Iterator<Anvil_ItemData> iterator = anvilList.iterator();
 		while (iterator.hasNext()) {

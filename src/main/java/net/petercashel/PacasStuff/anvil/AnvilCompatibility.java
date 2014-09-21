@@ -10,9 +10,6 @@ import net.petercashel.PacasStuff.mod_PacasStuff;
 
 public class AnvilCompatibility {
 
-	private Class Ic2Items;
-	private Class IC2;
-	
 	public void init() {
 		
 		if (Loader.isModLoaded("IC2") && mod_PacasStuff.CompatIC2) {

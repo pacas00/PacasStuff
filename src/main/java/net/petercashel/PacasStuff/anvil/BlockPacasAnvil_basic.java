@@ -1,6 +1,7 @@
 package net.petercashel.PacasStuff.anvil;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import com.mojang.authlib.GameProfile;
 
@@ -188,7 +189,7 @@ public class BlockPacasAnvil_basic extends BlockContainer implements ITileEntity
 	private boolean performRepair(EntityPlayer par5EntityPlayer,
 			ItemStack heldItem, ItemStack repairItem, World par1World) {
 
-		par5EntityPlayer.addPotionEffect(new PotionEffect(2, 40, 127));
+		par1World.playSoundEffect(par5EntityPlayer.posX + 0.5D, par5EntityPlayer.posY + 0.5D, par5EntityPlayer.posZ + 0.5D, "random.anvil_use", 0.2F, new Random().nextFloat() * 0.4F + 0.8F);
 		int maxDam = par5EntityPlayer.getHeldItem()
 				.getMaxDamage();
 		int currDam = par5EntityPlayer.getHeldItem()
@@ -220,7 +221,7 @@ public class BlockPacasAnvil_basic extends BlockContainer implements ITileEntity
 		for (int slots = 0; slots < size; ++slots) {
 			if (chest.getStackInSlot(slots) != null) { 
 				if (chest.getStackInSlot(slots).isItemEqual(repairItem)) {
-					par5EntityPlayer.addPotionEffect(new PotionEffect(2, 40, 127));
+					par1World.playSoundEffect(par5EntityPlayer.posX + 0.5D, par5EntityPlayer.posY + 0.5D, par5EntityPlayer.posZ + 0.5D, "random.anvil_use", 0.2F, new Random().nextFloat() * 0.4F + 0.8F);
 					int maxDam = par5EntityPlayer.getHeldItem()
 							.getMaxDamage();
 					int currDam = par5EntityPlayer.getHeldItem()

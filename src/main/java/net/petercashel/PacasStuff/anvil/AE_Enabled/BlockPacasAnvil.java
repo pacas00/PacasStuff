@@ -1,6 +1,7 @@
 package net.petercashel.PacasStuff.anvil.AE_Enabled;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import com.mojang.authlib.GameProfile;
 
@@ -219,7 +220,7 @@ public class BlockPacasAnvil extends BlockContainer implements ITileEntityProvid
 				if (tile.HasCompatibleItemStack(anvilManager.getItemRepairMatID(heldItem))) {
 					ItemStack repairItem = tile.FindCompatibleItemStack(anvilManager.getItemRepairMatID(heldItem));
 					if (tile.NetworkConsumeItemStack(repairItem, par5EntityPlayer, par1World)) {
-						par5EntityPlayer.addPotionEffect(new PotionEffect(2, 40, 127));
+						par1World.playSoundEffect(par2 + 0.5D, par3 + 0.5D, par4 + 0.5D, "random.anvil_use", 0.2F, new Random().nextFloat() * 0.4F + 0.8F);
 						int maxDam = par5EntityPlayer.getHeldItem()
 								.getMaxDamage();
 						int currDam = par5EntityPlayer.getHeldItem()
@@ -238,8 +239,12 @@ public class BlockPacasAnvil extends BlockContainer implements ITileEntityProvid
 						par5EntityPlayer.addChatMessage(new ChatComponentText("Repaired your " + (heldItem).getDisplayName() + damageword));
 						par5EntityPlayer.inventoryContainer.detectAndSendChanges();
 						return true;
+					} else {
+						return false;
 					}
 
+				} else {
+					return false;
 				}
 
 
@@ -310,7 +315,7 @@ public class BlockPacasAnvil extends BlockContainer implements ITileEntityProvid
 	private boolean performRepair(EntityPlayer par5EntityPlayer,
 			ItemStack heldItem, ItemStack repairItem, World par1World) {
 
-		par5EntityPlayer.addPotionEffect(new PotionEffect(2, 40, 127));
+		par1World.playSoundEffect(par5EntityPlayer.posX + 0.5D, par5EntityPlayer.posY + 0.5D, par5EntityPlayer.posZ + 0.5D, "random.anvil_use", 0.2F, new Random().nextFloat() * 0.4F + 0.8F);
 		int maxDam = par5EntityPlayer.getHeldItem()
 				.getMaxDamage();
 		int currDam = par5EntityPlayer.getHeldItem()
@@ -342,7 +347,7 @@ public class BlockPacasAnvil extends BlockContainer implements ITileEntityProvid
 		for (int slots = 0; slots < size; ++slots) {
 			if (chest.getStackInSlot(slots) != null) { 
 				if (chest.getStackInSlot(slots).isItemEqual(repairItem)) {
-					par5EntityPlayer.addPotionEffect(new PotionEffect(2, 40, 127));
+					par1World.playSoundEffect(par5EntityPlayer.posX + 0.5D, par5EntityPlayer.posY + 0.5D, par5EntityPlayer.posZ + 0.5D, "random.anvil_use", 0.2F, new Random().nextFloat() * 0.4F + 0.8F);
 					int maxDam = par5EntityPlayer.getHeldItem()
 							.getMaxDamage();
 					int currDam = par5EntityPlayer.getHeldItem()
