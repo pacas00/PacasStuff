@@ -10,3 +10,11 @@ container.PacChest2Double=Bottemless Chest
 tile.PacasAnvil.name=Networked Anvil
 tile.PacasAnvil_Basic.name=Managed Anvil
 item.ItemPacasAnvilTool.name=Managed Anvil Config Tool
+
+tile.BlockClock.name=Quartz Digital Clock
+tile.BlockClockPillar.name=Quartz Digital Clock Stand
+
+item.ItemFireTool.name=Handheld Fire Lighter
+tile.RedlandsPortal.name=Portal to The Red Lands
+tile.WOPPortal.name=Portal to The World of Plains
+tile.WOPPortalFire.name=Fire Indeed Hot :D

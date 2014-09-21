@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Level;
 import com.google.common.collect.Maps;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.command.ServerCommandManager;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
@@ -72,6 +73,9 @@ public class mod_PacasStuff {
 	public static Block PacasAnvil_Basic;
 	public static Item ItemPacasAnvilTool;
 	public static Item ItemFireTool;
+	
+	public static Block BlockClock;
+	public static Block BlockClockPillar;
 
 	public static boolean CompatEnable;
 	public static boolean CompatIC2;
@@ -105,6 +109,7 @@ public class mod_PacasStuff {
 	public static BiomeGenBase RedlandsM = null;
 
 
+	/** Portal Related Blocks **/
 	public static BlockWOPPortal WOPPortal;
 	public static Block WOPPortalFrame = Blocks.emerald_block;
 	public static BlockPortalFire PortalFire;
@@ -122,18 +127,36 @@ public class mod_PacasStuff {
 		proxy.registerTileEntities();
 		System.out.println("[PacasStuff] Loaded.");
 		FMLLog.log("PacasStuff", Level.INFO, "Mod Has Loaded [PacasStuff]");
-		
-		this.recipes();
+
 	}
 
 
 	public void recipes() {
+		
+		GameRegistry.addRecipe(new ItemStack(PacasAnvil_Basic, 1), new Object[] { "OIO", "rIr", "IpI", Character.valueOf('O'), Blocks.obsidian, Character.valueOf('I'), Blocks.iron_block, Character.valueOf('r'), Items.redstone, Character.valueOf('p'), Blocks.sticky_piston });
+    	
 		GameRegistry.addRecipe(new ItemStack(ItemFireTool, 1), new Object[] {
 			" T ", "WNB", " R ",
 			Character.valueOf('N'), Items.nether_star,
 			Character.valueOf('W'), Blocks.planks,
 			Character.valueOf('R'), Items.redstone,
-			Character.valueOf('T'), Blocks.redstone_torch
+			Character.valueOf('T'), Blocks.redstone_torch,
+			Character.valueOf('B'), Blocks.stone_button
+		});	
+		
+		GameRegistry.addRecipe(new ItemStack(BlockClock, 1), new Object[] {
+			"QRQ", "GCG", "QRQ",
+			Character.valueOf('Q'), Blocks.quartz_block,
+			Character.valueOf('C'), Items.clock,
+			Character.valueOf('R'), Items.redstone,
+			Character.valueOf('G'), Items.gold_ingot
+		});	
+		
+		GameRegistry.addRecipe(new ItemStack(BlockClockPillar, 3), new Object[] {
+			"QRQ", "QWQ", "QRQ",
+			Character.valueOf('Q'), Blocks.quartz_block,
+			Character.valueOf('R'), Blocks.redstone_block,
+			Character.valueOf('W'), Items.nether_star
 		});	
 	}
 
@@ -187,8 +210,6 @@ public class mod_PacasStuff {
     		AEModPlugin.blocks();
     	}
     	
-    	GameRegistry.addRecipe(new ItemStack(PacasAnvil_Basic, 1), new Object[] { "OIO", "rIr", "IpI", Character.valueOf('O'), Blocks.obsidian, Character.valueOf('I'), Blocks.iron_block, Character.valueOf('r'), Items.redstone, Character.valueOf('p'), Blocks.sticky_piston });
-    	
     	ItemPacasAnvilTool = new net.petercashel.PacasStuff.anvil.ItemPacasAnvilTool().setMaxStackSize(1).setUnlocalizedName("ItemPacasAnvilTool");
 		GameRegistry.registerItem(ItemPacasAnvilTool, "ItemPacasAnvilTool");
 		
@@ -196,13 +217,20 @@ public class mod_PacasStuff {
 		GameRegistry.registerItem(ItemFireTool, "ItemFireTool");
 
 		WOPPortal = new BlockWOPPortal("WOPPortal");
-		GameRegistry.registerBlock(WOPPortal, WOPPortal.getLocalizedName());
+		GameRegistry.registerBlock(WOPPortal, "WOPPortal");
 		
 		PortalFire = new BlockPortalFire("WOPPortalFire");
-		GameRegistry.registerBlock(PortalFire, PortalFire.getLocalizedName());
+		GameRegistry.registerBlock(PortalFire, "WOPPortalFire");
 		
 		RedlandsPortal = new BlockRedlandsPortal("RedlandsPortal");
-		GameRegistry.registerBlock(RedlandsPortal, RedlandsPortal.getLocalizedName());
+		GameRegistry.registerBlock(RedlandsPortal, "RedlandsPortal");
+		
+		BlockClockPillar = new net.petercashel.PacasStuff.BlockClock.BlockClockPillar(Material.rock).setBlockTextureName("BlockClockPillar").setBlockName("BlockClockPillar");
+		GameRegistry.registerBlock(BlockClockPillar, "BlockClockPillar");
+		
+		BlockClock = new net.petercashel.PacasStuff.BlockClock.BlockClock(Material.iron).setBlockTextureName("BlockClock").setBlockName("BlockClock");
+		GameRegistry.registerBlock(BlockClock, "BlockClock");
+		GameRegistry.registerTileEntity(net.petercashel.PacasStuff.BlockClock.TileEntityBlockClock.class, "TileEntityBlockClock");
 	}
 
 	@EventHandler
@@ -270,6 +298,7 @@ public class mod_PacasStuff {
 		if (CompatEnable) {
 			AnvilCompat.init();
 		}
+		recipes();
 		if (Loader.isModLoaded("appliedenergistics2")) {
     		AEModPlugin.recipes();
     	}

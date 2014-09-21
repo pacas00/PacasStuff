@@ -5,6 +5,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
+import net.petercashel.PacasStuff.BlockClock.ItemRendererBlockClock;
+import net.petercashel.PacasStuff.BlockClock.TileEntityBlockClock;
+import net.petercashel.PacasStuff.BlockClock.TileEntityBlockClockRenderer;
 import net.petercashel.PacasStuff.anvil.ItemPacasAnvilRenderer_Basic;
 import net.petercashel.PacasStuff.anvil.TileEntityPacasAnvilRenderer_Basic;
 import net.petercashel.PacasStuff.anvil.TileEntityPacasAnvil_Basic;
@@ -66,5 +69,10 @@ public class ClientProxy extends CommonProxy{
 			MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(mod_PacasStuff.PacasAnvil), new ItemPacasAnvilRenderer(render, new TileEntityPacasAnvil()));
 
 		}
+		
+		TileEntitySpecialRenderer blockClock = new TileEntityBlockClockRenderer();
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBlockClock.class, blockClock);
+		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(mod_PacasStuff.BlockClock), new ItemRendererBlockClock(blockClock, new TileEntityBlockClock()));
+
 	}
 }
