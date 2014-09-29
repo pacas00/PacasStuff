@@ -35,8 +35,8 @@ minecraft {
 }
 
 dependencies {
-    compile files('lib/appliedenergistics2-rv1-stable-1-dev.jar');		// AE2 dev version (NEED TO FIND WORK AROUND)
     compile files('lib/fake_HQM.jar');		// one class jar containing a boolean to compile against
+	compile "appeng:appliedenergistics2:rv1-stable-1:dev"
 }
 
 processResources
