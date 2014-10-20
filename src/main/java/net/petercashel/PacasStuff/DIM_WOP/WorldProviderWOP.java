@@ -31,12 +31,6 @@ public class WorldProviderWOP extends WorldProvider {
 		return "DIM-WOP";
 	}
 
-	/** Get Provider for dimension **/
-	public static WorldProvider getProviderForDimension(int id)
-	{
-		return DimensionManager.createProviderFor(mod_PacasStuff.DIM_ID_WOP);
-	}
-
 	/** Welcome message **/
 	@Override
 	public String getWelcomeMessage()

@@ -20,17 +20,18 @@ import net.minecraftforge.fluids.FluidRegistry;
 
 public class BiomeGenWOP extends BiomeGenBase {
 	
-	public final Material blockMaterial;
-
-    public static final BiomeGenBase.Height height_WOP = new BiomeGenBase.Height(0.2F, 0.2F);
+	public static final BiomeGenBase.Height height_WOP = new BiomeGenBase.Height(0.165F, 0.125F);
 
 	public BiomeGenWOP(int i) {
 		super(i);
-		this.blockMaterial = Material.water;
 		this.spawnableMonsterList.clear();
 		this.spawnableCreatureList.clear();
 		this.topBlock = (Blocks.grass);
 		this.fillerBlock = (Blocks.dirt);
+		
+		this.enableSnow = false;
+		this.enableRain = true;
+		
 		
 		this.theBiomeDecorator = this.createBiomeDecorator();
 		

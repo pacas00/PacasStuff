@@ -35,7 +35,7 @@ public class WorldChunkMangerWOP extends WorldChunkManager {
 	{
 		this();
 		// i changed this to my GenLayerTutorial
-		GenLayer[] agenlayer = GenLayerWOP.makeTheWorld(seed);
+		GenLayer[] agenlayer = GenLayerWOP.makeTheWorld(seed, worldtype);
 		this.myGenBiomes = agenlayer[0];
 		this.myBiomeIndexLayer = agenlayer[1];
 	}
