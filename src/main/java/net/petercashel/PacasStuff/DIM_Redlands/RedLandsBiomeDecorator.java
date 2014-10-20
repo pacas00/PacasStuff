@@ -165,7 +165,7 @@ public class RedLandsBiomeDecorator extends BiomeDecorator {
         this.sandPerChunk2 = 3;
         this.clayPerChunk = 1;
         this.generateLakes = true;
-        this.treesPerChunk = 8;
+        this.treesPerChunk = 7;
     }
 
     public void decorateChunk(World p_150512_1_, Random p_150512_2_, BiomeGenBase p_150512_3_, int p_150512_4_, int p_150512_5_)

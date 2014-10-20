@@ -6,6 +6,11 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.passive.EntityChicken;
+import net.minecraft.entity.passive.EntityCow;
+import net.minecraft.entity.passive.EntityPig;
+import net.minecraft.entity.passive.EntitySheep;
+import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.ColorizerFoliage;
@@ -26,8 +31,8 @@ import net.petercashel.PacasStuff.DIM_Common.PacasDimensionWorldGenTree;
 
 public class BiomeGenRedlands extends BiomeGenBase {
 
-	public final Material blockMaterial;
-	public static final BiomeGenBase.Height height_Redlands = new BiomeGenBase.Height(0.2F, 0.2F);
+	public static final BiomeGenBase.Height height_Redlands = new BiomeGenBase.Height(5.25F, 1.75F);
+	public static final BiomeGenBase.Height height_Redlands_Short = new BiomeGenBase.Height(1.25F, 0.2F);
 	protected WorldGenTrees worldGeneratorTrees;
 
 	/** The big tree generator. */
@@ -35,15 +40,22 @@ public class BiomeGenRedlands extends BiomeGenBase {
 
 	public BiomeGenRedlands(int i) {
 		super(i);
-		this.blockMaterial = Material.water;
 		this.spawnableMonsterList.clear();
 		this.spawnableCreatureList.clear();
+		this.spawnableCaveCreatureList.clear();
+		this.spawnableWaterCreatureList.clear();
+		
+		this.spawnableCreatureList.add(new BiomeGenBase.SpawnListEntry(EntitySheep.class, 12, 4, 4));
+        this.spawnableCreatureList.add(new BiomeGenBase.SpawnListEntry(EntityPig.class, 10, 4, 4));
+        this.spawnableCreatureList.add(new BiomeGenBase.SpawnListEntry(EntityChicken.class, 10, 4, 4));
+        this.spawnableCreatureList.add(new BiomeGenBase.SpawnListEntry(EntityCow.class, 8, 4, 4));
+        this.spawnableCreatureList.add(new BiomeGenBase.SpawnListEntry(EntityWolf.class, 5, 4, 4));
 		this.topBlock = (Blocks.grass);
 		this.fillerBlock = (Blocks.dirt);
 		this.worldGeneratorTrees = new PacasDimensionWorldGenTree(false);
 		this.worldGeneratorBigTree = new PacasDimensionWorldGenBigTree(false);
 		this.theBiomeDecorator = this.createBiomeDecorator();
-		this.theBiomeDecorator.treesPerChunk = 8;
+		this.theBiomeDecorator.treesPerChunk = 5;
 
 		///** this changes the water colour **/
 		//waterColorMultiplier = 0xFF6000;
@@ -59,26 +71,6 @@ public class BiomeGenRedlands extends BiomeGenBase {
 		return new RedLandsBiomeDecorator();
 	}
 
-	/**
-	 * Provides the basic grass color based on the biome temperature and rainfall
-	 */
-	@SideOnly(Side.CLIENT)
-	@Override
-	public int getBiomeGrassColor(int p_150558_1_, int p_150558_2_, int p_150558_3_)
-	{
-		return 0xAA1900;
-	}
-
-	/**
-	 * Provides the basic foliage color based on the biome temperature and rainfall
-	 */
-	@SideOnly(Side.CLIENT)
-	@Override
-	public int getBiomeFoliageColor(int p_150571_1_, int p_150571_2_, int p_150571_3_)
-	{
-		return 0x990000;
-	}
-	
 	@Override  //getRandomWorldGenForTrees
 	public WorldGenAbstractTree func_150567_a(Random p_150567_1_)
 	{

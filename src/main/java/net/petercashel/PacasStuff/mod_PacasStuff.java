@@ -107,6 +107,9 @@ public class mod_PacasStuff {
 	public static int BiomeID_Redlands;
 	public static BiomeGenBase Redlands = null;
 	
+	public static int BiomeID_Redlands_Short;
+	public static BiomeGenBase Redlands_Short = null;
+	
 	/** Mutated **/
 	public static int BiomeID_WOPM;
 	public static BiomeGenBase WOPM = null;
@@ -185,14 +188,16 @@ public class mod_PacasStuff {
 			CompatIC2 = cfg.get(CATEGORY_GENERAL, "CompatIC2", true).getBoolean(true);
 			CompatTE4 = cfg.get(CATEGORY_GENERAL, "CompatTE3", true).getBoolean(true);
 			
-			BiomeID_WOP = cfg.get(CATEGORY_GENERAL, "BiomeID_WOP", 100).getInt(100);
-			BiomeID_WOPM = cfg.get(CATEGORY_GENERAL, "BiomeID_WOPM", 228).getInt(228);
+			BiomeID_WOP = cfg.get(CATEGORY_GENERAL, "BiomeID_WOP", 200).getInt(200);
+			BiomeID_WOPM = cfg.get(CATEGORY_GENERAL, "BiomeID_WOPM", 201).getInt(201);
 			WOP = new BiomeGenWOP(BiomeID_WOP).setBiomeName("WOP").setColor(0x66AD2D).setHeight(BiomeGenWOP.height_WOP);
 			WOPM = new BiomeGenMutated(BiomeID_WOPM, WOP).setBiomeName("WOPM");
 			
-			BiomeID_Redlands = cfg.get(CATEGORY_GENERAL, "BiomeID_Redlands", 101).getInt(101);
-			BiomeID_RedlandsM = cfg.get(CATEGORY_GENERAL, "BiomeID_RedlandsM", 229).getInt(229);
-			Redlands = new BiomeGenRedlands(BiomeID_Redlands).setBiomeName("Redlands").setColor(0x66AD2D).setHeight(BiomeGenRedlands.height_Redlands);
+			BiomeID_Redlands = cfg.get(CATEGORY_GENERAL, "BiomeID_Redlands", 202).getInt(202);
+			BiomeID_Redlands_Short = cfg.get(CATEGORY_GENERAL, "BiomeID_Redlands_Short", 203).getInt(203);
+			BiomeID_RedlandsM = cfg.get(CATEGORY_GENERAL, "BiomeID_RedlandsM", 204).getInt(204);
+			Redlands = new BiomeGenRedlands(BiomeID_Redlands).setBiomeName("Redlands").setColor(353825).setHeight(BiomeGenRedlands.height_Redlands);
+			Redlands_Short = new BiomeGenRedlands(BiomeID_Redlands_Short).setBiomeName("Redlands Low").setColor(353825).setHeight(BiomeGenRedlands.height_Redlands_Short);
 			RedlandsM = new BiomeGenMutated(BiomeID_RedlandsM, Redlands).setBiomeName("RedlandsM");
 			
 			

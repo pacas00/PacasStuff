@@ -1,7 +1,11 @@
 package net.petercashel.PacasStuff.DIM_Redlands;
 
+import net.minecraft.world.WorldType;
 import net.minecraft.world.gen.layer.GenLayer;
+import net.minecraft.world.gen.layer.GenLayerAddIsland;
 import net.minecraft.world.gen.layer.GenLayerDeepOcean;
+import net.minecraft.world.gen.layer.GenLayerFuzzyZoom;
+import net.minecraft.world.gen.layer.GenLayerRemoveTooMuchOcean;
 import net.minecraft.world.gen.layer.GenLayerSmooth;
 import net.minecraft.world.gen.layer.GenLayerVoronoiZoom;
 import net.minecraft.world.gen.layer.GenLayerZoom;
@@ -12,10 +16,17 @@ public abstract class GenLayerRedlands extends GenLayer {
 		super(seed);
 	}
 
-	public static GenLayer[] makeTheWorld(long seed) {
+	public static GenLayer[] makeTheWorld(long seed, WorldType worldtype) {
 
 		GenLayer biomes = new GenLayerBiomesRedlands(1L);
-		GenLayerDeepOcean genlayerdeepocean = new GenLayerDeepOcean(4L, biomes);
+		GenLayerFuzzyZoom genlayerfuzzyzoom = new GenLayerFuzzyZoom(4L, biomes);
+		GenLayerZoom genlayerzoom = new GenLayerZoom(2001L, genlayerfuzzyzoom);
+		
+		GenLayerAddIsland genlayeraddisland = new GenLayerAddIsland(2L, genlayerzoom);
+        genlayeraddisland = new GenLayerAddIsland(50L, genlayeraddisland);
+        genlayeraddisland = new GenLayerAddIsland(70L, genlayeraddisland);
+        GenLayerRemoveTooMuchOcean genlayerremovetoomuchocean = new GenLayerRemoveTooMuchOcean(2L, genlayeraddisland);
+        GenLayerDeepOcean genlayerdeepocean = new GenLayerDeepOcean(4L, genlayerremovetoomuchocean);
 
         GenLayerSmooth genlayersmooth = new GenLayerSmooth(1000L, genlayerdeepocean);
 

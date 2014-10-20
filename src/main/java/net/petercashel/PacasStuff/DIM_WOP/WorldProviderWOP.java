@@ -89,5 +89,10 @@ public class WorldProviderWOP extends WorldProvider {
 	{
 		 return true;
 	}
+	
+	public boolean shouldMapSpin(String entity, double x, double y, double z)
+    {
+        return false;
+    }
 
 }

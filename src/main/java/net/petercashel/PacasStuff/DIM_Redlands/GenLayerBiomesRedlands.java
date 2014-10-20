@@ -7,7 +7,7 @@ import net.petercashel.PacasStuff.mod_PacasStuff;
 
 public class GenLayerBiomesRedlands extends GenLayer {
 
-	protected static BiomeGenBase[] allowedBiomesReal = {mod_PacasStuff.Redlands, mod_PacasStuff.RedlandsM, BiomeGenBase.river};
+	protected static BiomeGenBase[] allowedBiomesReal = {mod_PacasStuff.Redlands, mod_PacasStuff.RedlandsM, BiomeGenBase.ocean, mod_PacasStuff.Redlands_Short};
 	protected static BiomeGenBase[] allowedBiomes = allowedBiomesReal;
 	
 

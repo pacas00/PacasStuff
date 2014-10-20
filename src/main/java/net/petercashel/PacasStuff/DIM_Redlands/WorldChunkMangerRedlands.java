@@ -35,7 +35,7 @@ public class WorldChunkMangerRedlands extends WorldChunkManager {
 	{
 		this();
 		// i changed this to my GenLayerTutorial
-		GenLayer[] agenlayer = GenLayerRedlands.makeTheWorld(seed);
+		GenLayer[] agenlayer = GenLayerRedlands.makeTheWorld(seed, worldtype);
 		this.myGenBiomes = agenlayer[0];
 		this.myBiomeIndexLayer = agenlayer[1];
 	}

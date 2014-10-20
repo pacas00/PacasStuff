@@ -31,12 +31,6 @@ public class WorldProviderRedlands extends WorldProvider {
 		return "DIM-Redlands";
 	}
 
-	/** Get Provider for dimension **/
-	public static WorldProvider getProviderForDimension(int id)
-	{
-		return DimensionManager.createProviderFor(mod_PacasStuff.DIM_ID_Redlands);
-	}
-
 	/** Welcome message **/
 	@Override
 	public String getWelcomeMessage()
@@ -94,5 +88,10 @@ public class WorldProviderRedlands extends WorldProvider {
 	{
 		 return true;
 	}
+	
+	public boolean shouldMapSpin(String entity, double x, double y, double z)
+    {
+        return false;
+    }
 
 }
