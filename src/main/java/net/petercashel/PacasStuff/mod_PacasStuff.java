@@ -260,9 +260,9 @@ public class mod_PacasStuff {
 		itemExplosivePlayerSelector = new ItemExplosivePlayerSelector().setMaxStackSize(1).setUnlocalizedName("ItemExplosivePlayerSelector");
 		GameRegistry.registerItem(itemExplosivePlayerSelector, "ItemExplosivePlayerSelector");
 		
-		ExplosivePressurePlate = new ExplosivePressurePlate("stone", Material.rock, BlockPressurePlate.Sensitivity.players).setHardness(0.5F).setStepSound(Block.soundTypePiston).setBlockName("pressurePlate");
+		ExplosivePressurePlate = new ExplosivePressurePlate("stone", Material.rock, BlockPressurePlate.Sensitivity.players).setHardness(50.0F).setStepSound(Block.soundTypePiston).setBlockName("pressurePlate");
 		GameRegistry.registerBlock(ExplosivePressurePlate, "ExplosivePressurePlate");
-		ExplosivePressurePlateWood = new ExplosivePressurePlate("planks_oak", Material.wood, BlockPressurePlate.Sensitivity.players).setHardness(0.5F).setStepSound(Block.soundTypePiston).setBlockName("pressurePlate");
+		ExplosivePressurePlateWood = new ExplosivePressurePlate("planks_oak", Material.wood, BlockPressurePlate.Sensitivity.players).setHardness(50.0F).setStepSound(Block.soundTypePiston).setBlockName("pressurePlate");
 		GameRegistry.registerBlock(ExplosivePressurePlateWood, "ExplosivePressurePlateWood");
 	}
 
