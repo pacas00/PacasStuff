@@ -94,30 +94,6 @@ public class ExplosivePressurePlate extends BlockPressurePlate implements IPlaye
 	}
 
 	/**
-	 * How many world ticks before ticking
-	 */
-	public int tickRate(World p_149738_1_)
-	{
-		return 20;
-	}
-
-	/**
-	 * Ticks the block if it's been scheduled
-	 */
-	public void updateTick(World p_149674_1_, int p_149674_2_, int p_149674_3_, int p_149674_4_, Random p_149674_5_)
-	{
-		if (!p_149674_1_.isRemote)
-        {
-            int l = this.func_150060_c(p_149674_1_.getBlockMetadata(p_149674_2_, p_149674_3_, p_149674_4_));
-
-            if (l > 0)
-            {
-                this.func_150062_a(p_149674_1_, p_149674_2_, p_149674_3_, p_149674_4_, l);
-            }
-        }
-	}
-
-	/**
      * Drops the block items with a specified chance of dropping the specified items
      */
     public void dropBlockAsItemWithChance(World p_149690_1_, int p_149690_2_, int p_149690_3_, int p_149690_4_, int p_149690_5_, float p_149690_6_, int p_149690_7_)
