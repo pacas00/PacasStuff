@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Level;
 import com.google.common.collect.Maps;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockPressurePlate;
 import net.minecraft.block.material.Material;
 import net.minecraft.command.ServerCommandManager;
 import net.minecraft.creativetab.CreativeTabs;
@@ -33,6 +34,8 @@ import net.petercashel.PacasStuff.DIM_Redlands.WorldProviderRedlands;
 import net.petercashel.PacasStuff.DIM_WOP.BiomeGenWOP;
 import net.petercashel.PacasStuff.DIM_WOP.BlockWOPPortal;
 import net.petercashel.PacasStuff.DIM_WOP.WorldProviderWOP;
+import net.petercashel.PacasStuff.ExplosiveBlocks.items.*;
+import net.petercashel.PacasStuff.ExplosiveBlocks.blocks.*;
 import net.petercashel.PacasStuff.ModSpecific.AEModPlugin;
 import net.petercashel.PacasStuff.anvil.BlockPacasAnvil_basic;
 import net.petercashel.PacasStuff.anvil.anvilManager;
@@ -66,6 +69,9 @@ public class mod_PacasStuff {
 	static int tabID = CreativeTabs.getNextID();
 	public static String PacasStuff = "PacasStuff";
 	public static CreativeTabs tabPacasStuff = new CreativeTabPacasStuff(tabID, "PacasStuff");
+	static int tabID2 = CreativeTabs.getNextID();
+	public static String PacasExplosions = "PacasExplosions";
+	public static CreativeTabs tabPacasExplosions = new CreativeTabPacasExplosions(tabID2, "PacasExplosions");
 	public static int PacChestBlockRendererID;
 	public static Block PacasOreChest;
 	public static Block PacasOreChest2;
@@ -90,7 +96,7 @@ public class mod_PacasStuff {
 
 	private HQMEditToggle HQMEditToggleCMD;
 	
-	/** Dimensions **/
+	/** Dimensions **/ // Defaults set here. weird is happening
 	public static int DIM_ID_WOP;
 	public static int DIM_ID_Redlands;
 	
@@ -117,6 +123,12 @@ public class mod_PacasStuff {
 	public static BlockRedlandsPortal RedlandsPortal;
 	public static Block RedlandsPortalFrame = Blocks.nether_brick;
 	
+	
+	
+	/** Explosive FUN! **/
+	public static Item itemExplosivePlayerSelector;
+	public static Block ExplosivePressurePlate;
+	public static Block ExplosivePressurePlateWood;
 
 	
 	@EventHandler
@@ -184,8 +196,8 @@ public class mod_PacasStuff {
 			RedlandsM = new BiomeGenMutated(BiomeID_RedlandsM, Redlands).setBiomeName("RedlandsM");
 			
 			
-			DIM_ID_WOP = cfg.get(CATEGORY_GENERAL, "DIM_ID_WOP", 128).getInt(128);
-			DIM_ID_Redlands = cfg.get(CATEGORY_GENERAL, "DIM_ID_Redlands", 129).getInt(129);
+			DIM_ID_WOP = cfg.get(CATEGORY_GENERAL, "DIM_ID_WOP", -110).getInt(-110);
+			DIM_ID_Redlands = cfg.get(CATEGORY_GENERAL, "DIM_ID_Redlands", -111).getInt(-111);
 
 
 			
@@ -194,6 +206,19 @@ public class mod_PacasStuff {
 		} finally {
 			cfg.save();
 		}
+		
+		BiomeManager.addVillageBiome(this.WOP, true);
+		BiomeManager.addVillageBiome(this.WOPM, true);
+		BiomeManager.addVillageBiome(this.Redlands, true);
+		BiomeManager.addVillageBiome(this.RedlandsM, true);
+				
+		/**Register WorldProvider for Dimension **/
+		DimensionManager.registerProviderType(this.DIM_ID_WOP, WorldProviderWOP.class, false);
+		DimensionManager.registerDimension(this.DIM_ID_WOP, this.DIM_ID_WOP);
+		
+		DimensionManager.registerProviderType(this.DIM_ID_Redlands, WorldProviderRedlands.class, false);
+		DimensionManager.registerDimension(this.DIM_ID_Redlands, this.DIM_ID_Redlands);
+		
 		PacasOreChest = new net.petercashel.PacasStuff.pacChest.BlockPacChest(0).setBlockName("PacasOreChest").setBlockTextureName("PacasOreChest").setHardness(3.0F).setResistance(5.0F);
     	GameRegistry.registerBlock(PacasOreChest, ItemBlock.class, "BlockPacasOreChest");
     	GameRegistry.registerTileEntity(net.petercashel.PacasStuff.pacChest.TileEntityPacChest.class, "TileEntityPacChest");
@@ -231,6 +256,14 @@ public class mod_PacasStuff {
 		BlockClock = new net.petercashel.PacasStuff.BlockClock.BlockClock(Material.iron).setBlockTextureName("BlockClock").setBlockName("BlockClock");
 		GameRegistry.registerBlock(BlockClock, "BlockClock");
 		GameRegistry.registerTileEntity(net.petercashel.PacasStuff.BlockClock.TileEntityBlockClock.class, "TileEntityBlockClock");
+		
+		itemExplosivePlayerSelector = new ItemExplosivePlayerSelector().setMaxStackSize(1).setUnlocalizedName("ItemExplosivePlayerSelector");
+		GameRegistry.registerItem(itemExplosivePlayerSelector, "ItemExplosivePlayerSelector");
+		
+		ExplosivePressurePlate = new ExplosivePressurePlate("stone", Material.rock, BlockPressurePlate.Sensitivity.players).setHardness(0.5F).setStepSound(Block.soundTypePiston).setBlockName("pressurePlate");
+		GameRegistry.registerBlock(ExplosivePressurePlate, "ExplosivePressurePlate");
+		ExplosivePressurePlateWood = new ExplosivePressurePlate("planks_oak", Material.wood, BlockPressurePlate.Sensitivity.players).setHardness(0.5F).setStepSound(Block.soundTypePiston).setBlockName("pressurePlate");
+		GameRegistry.registerBlock(ExplosivePressurePlateWood, "ExplosivePressurePlateWood");
 	}
 
 	@EventHandler
@@ -239,19 +272,6 @@ public class mod_PacasStuff {
 		anvilManager.Load();
 
 		addToAnvilManager();
-		
-		BiomeManager.addVillageBiome(this.WOP, true);
-		BiomeManager.addVillageBiome(this.WOPM, true);
-		BiomeManager.addVillageBiome(this.Redlands, true);
-		BiomeManager.addVillageBiome(this.RedlandsM, true);
-		
-		/**Register WorldProvider for Dimension **/
-		DimensionManager.registerProviderType(this.DIM_ID_WOP, WorldProviderWOP.class, true);
-		DimensionManager.registerDimension(this.DIM_ID_WOP, this.DIM_ID_WOP);
-		
-		DimensionManager.registerProviderType(this.DIM_ID_Redlands, WorldProviderRedlands.class, true);
-		DimensionManager.registerDimension(this.DIM_ID_Redlands, this.DIM_ID_Redlands);
-		
 	}
 	
 	@EventHandler
