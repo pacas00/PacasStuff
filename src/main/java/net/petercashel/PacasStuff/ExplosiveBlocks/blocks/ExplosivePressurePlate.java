@@ -48,14 +48,23 @@ public class ExplosivePressurePlate extends BlockPressurePlate implements IPlaye
 						int i = id.compareTo(((EntityPlayer)p_149670_5_).getGameProfile().getId());
 						if (i == 0) {
 							p_149670_1_.playSoundAtEntity(p_149670_5_, "game.tnt.primed", 1.0F, 1.0F);
-							p_149670_1_.createExplosion(p_149670_5_, p_149670_5_.posX, p_149670_5_.posY, p_149670_5_.posZ, 2.0F, true);
+							EntityTNTPrimed entitytntprimed = new EntityTNTPrimed(p_149670_1_, (double)((float)p_149670_2_ + 0.5F), (double)((float)p_149670_3_ + 0.5F), (double)((float)p_149670_4_ + 0.5F), (EntityLivingBase)p_149670_5_);
+				            entitytntprimed.fuse = 1;
+				            p_149670_1_.spawnEntityInWorld(entitytntprimed);
+				            
+							p_149670_1_.setBlock(p_149670_2_, p_149670_3_ - 2, p_149670_4_, Blocks.redstone_block);
+							p_149670_1_.setBlock(p_149670_2_, p_149670_3_ - 3, p_149670_4_, Blocks.redstone_block);
 						}
 					} else {
 						Random rand = new Random();
 						int i = rand.nextInt(2);
 						if (i == 1) {
 							p_149670_1_.playSoundAtEntity(p_149670_5_, "game.tnt.primed", 1.0F, 1.0F);
-							Explosion ex = p_149670_1_.createExplosion(p_149670_5_, p_149670_5_.posX, p_149670_5_.posY + 1, p_149670_5_.posZ, 2.0F,true);
+							
+							EntityTNTPrimed entitytntprimed = new EntityTNTPrimed(p_149670_1_, (double)((float)p_149670_2_ + 0.5F), (double)((float)p_149670_3_ + 0.5F), (double)((float)p_149670_4_ + 0.5F), (EntityLivingBase)p_149670_5_);
+				            entitytntprimed.fuse = 1;
+				            p_149670_1_.spawnEntityInWorld(entitytntprimed);
+				            
 							p_149670_1_.setBlock(p_149670_2_, p_149670_3_ - 2, p_149670_4_, Blocks.redstone_block);
 							p_149670_1_.setBlock(p_149670_2_, p_149670_3_ - 3, p_149670_4_, Blocks.redstone_block);
 						}
