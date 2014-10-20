@@ -16,7 +16,7 @@ final class CreativeTabPacasStuff extends CreativeTabs
 
     @Override
 	public Item getTabIconItem() {
-		return (new ItemStack(Blocks.sponge, 1)).getItem();
+		return (new ItemStack(mod_PacasStuff.PacasAnvil_Basic, 1)).getItem();
 	}
     
     @SideOnly(Side.CLIENT)
