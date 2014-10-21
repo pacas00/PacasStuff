@@ -8,6 +8,7 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import net.petercashel.PacasStuff.BlockClock.ItemRendererBlockClock;
 import net.petercashel.PacasStuff.BlockClock.TileEntityBlockClock;
 import net.petercashel.PacasStuff.BlockClock.TileEntityBlockClockRenderer;
+import net.petercashel.PacasStuff.DIM_Common.Render.Redlands_Grass_Renderer;
 import net.petercashel.PacasStuff.anvil.ItemPacasAnvilRenderer_Basic;
 import net.petercashel.PacasStuff.anvil.TileEntityPacasAnvilRenderer_Basic;
 import net.petercashel.PacasStuff.anvil.TileEntityPacasAnvil_Basic;
@@ -49,6 +50,8 @@ public class ClientProxy extends CommonProxy{
 	@Override
 	public void initRenderingAndTextures() {
 		mod_PacasStuff.PacChestBlockRendererID = RenderingRegistry.getNextAvailableRenderId();
+		mod_PacasStuff.Redlands_GrassRendererID = RenderingRegistry.getNextAvailableRenderId();
+		RenderingRegistry.registerBlockHandler(new Redlands_Grass_Renderer());
 
 	}
 

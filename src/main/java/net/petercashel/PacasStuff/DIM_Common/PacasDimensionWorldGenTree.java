@@ -7,6 +7,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenTrees;
+import net.petercashel.PacasStuff.mod_PacasStuff;
 
 
 
@@ -38,6 +39,9 @@ public class PacasDimensionWorldGenTree extends WorldGenTrees {
 	public boolean generate(World par1World, Random par2Random, int par3, int par4, int par5) {
 		int var6 = par2Random.nextInt(3) + this.minTreeHeight;
 		boolean var7 = true;
+		
+		Block grass = mod_PacasStuff.Redlands_Grass;
+		Block dirt = mod_PacasStuff.Redlands_Dirt;
 
 		if (par4 >= 1 && par4 + var6 + 1 <= 256) {
 			int var8;
@@ -63,7 +67,7 @@ public class PacasDimensionWorldGenTree extends WorldGenTrees {
 							var12B = par1World.getBlock(var10, var8, var11);
 							var12 = var12B.getIdFromBlock(var12B);
 
-							if (var12B.getIdFromBlock(var12B) != 0 && !var12B.isLeaves(par1World, var10, var8, var11) && var12 != var12B.getIdFromBlock(Blocks.grass) && var12 != var12B.getIdFromBlock(Blocks.dirt) && !var12B.isWood(par1World, var10, var8, var11)) {
+							if (var12B.getIdFromBlock(var12B) != 0 && !var12B.isLeaves(par1World, var10, var8, var11) && var12 != var12B.getIdFromBlock(grass) && var12 != var12B.getIdFromBlock(dirt) && !var12B.isWood(par1World, var10, var8, var11)) {
 								var7 = false;
 							}
 						} else {
@@ -79,8 +83,8 @@ public class PacasDimensionWorldGenTree extends WorldGenTrees {
 				Block var8B = par1World.getBlock(par3, par4 - 1, par5);
 				var8 = var8B.getIdFromBlock(var8B);
 
-				if ((var8 == var8B.getIdFromBlock(Blocks.grass) || var8 == var8B.getIdFromBlock(Blocks.dirt)) && par4 < 256 - var6 - 1) {
-					this.setBlockAndNotifyAdequately(par1World, par3, par4 - 1, par5, Blocks.dirt, 0);
+				if ((var8 == var8B.getIdFromBlock(grass) || var8 == var8B.getIdFromBlock(dirt)) && par4 < 256 - var6 - 1) {
+					this.setBlockAndNotifyAdequately(par1World, par3, par4 - 1, par5, dirt, 0);
 					var9 = 3;
 					byte var18 = 0;
 					int var13;

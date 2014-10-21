@@ -9,6 +9,8 @@ import org.apache.logging.log4j.Level;
 import com.google.common.collect.Maps;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockDirt;
+import net.minecraft.block.BlockGrass;
 import net.minecraft.block.BlockPressurePlate;
 import net.minecraft.block.material.Material;
 import net.minecraft.command.ServerCommandManager;
@@ -34,6 +36,7 @@ import net.petercashel.PacasStuff.DIM_Redlands.WorldProviderRedlands;
 import net.petercashel.PacasStuff.DIM_WOP.BiomeGenWOP;
 import net.petercashel.PacasStuff.DIM_WOP.BlockWOPPortal;
 import net.petercashel.PacasStuff.DIM_WOP.WorldProviderWOP;
+import net.petercashel.PacasStuff.DIM_Common.Blocks.*;
 import net.petercashel.PacasStuff.ExplosiveBlocks.items.*;
 import net.petercashel.PacasStuff.ExplosiveBlocks.blocks.*;
 import net.petercashel.PacasStuff.ModSpecific.AEModPlugin;
@@ -116,7 +119,10 @@ public class mod_PacasStuff {
 	
 	public static int BiomeID_RedlandsM;
 	public static BiomeGenBase RedlandsM = null;
-
+	
+	/** BiomeGen Blocks **/
+	public static Block Redlands_Dirt;
+	public static Block Redlands_Grass;
 
 	/** Portal Related Blocks **/
 	public static BlockWOPPortal WOPPortal;
@@ -133,19 +139,9 @@ public class mod_PacasStuff {
 	public static Block ExplosivePressurePlate;
 	public static Block ExplosivePressurePlateWood;
 
+	public static int Redlands_GrassRendererID;
+
 	
-	@EventHandler
-	public void load(FMLInitializationEvent event) 
-	{
-		proxy.prepareTileEntityInformation();
-		proxy.initRenderingAndTextures();
-		proxy.registerTileEntities();
-		System.out.println("[PacasStuff] Loaded.");
-		FMLLog.log("PacasStuff", Level.INFO, "Mod Has Loaded [PacasStuff]");
-
-	}
-
-
 	public void recipes() {
 		
 		GameRegistry.addRecipe(new ItemStack(PacasAnvil_Basic, 1), new Object[] { "OIO", "rIr", "IpI", Character.valueOf('O'), Blocks.obsidian, Character.valueOf('I'), Blocks.iron_block, Character.valueOf('r'), Items.redstone, Character.valueOf('p'), Blocks.sticky_piston });
@@ -196,8 +192,8 @@ public class mod_PacasStuff {
 			BiomeID_Redlands = cfg.get(CATEGORY_GENERAL, "BiomeID_Redlands", 202).getInt(202);
 			BiomeID_Redlands_Short = cfg.get(CATEGORY_GENERAL, "BiomeID_Redlands_Short", 203).getInt(203);
 			BiomeID_RedlandsM = cfg.get(CATEGORY_GENERAL, "BiomeID_RedlandsM", 204).getInt(204);
-			Redlands = new BiomeGenRedlands(BiomeID_Redlands).setBiomeName("Redlands").setColor(353825).setHeight(BiomeGenRedlands.height_Redlands);
-			Redlands_Short = new BiomeGenRedlands(BiomeID_Redlands_Short).setBiomeName("Redlands Low").setColor(353825).setHeight(BiomeGenRedlands.height_Redlands_Short);
+			Redlands = new BiomeGenRedlands(BiomeID_Redlands).setBiomeName("Redlands").setHeight(BiomeGenRedlands.height_Redlands);
+			Redlands_Short = new BiomeGenRedlands(BiomeID_Redlands_Short).setBiomeName("Redlands Low").setHeight(BiomeGenRedlands.height_Redlands_Short);
 			RedlandsM = new BiomeGenMutated(BiomeID_RedlandsM, Redlands).setBiomeName("RedlandsM");
 			
 			
@@ -224,6 +220,17 @@ public class mod_PacasStuff {
 		DimensionManager.registerProviderType(this.DIM_ID_Redlands, WorldProviderRedlands.class, false);
 		DimensionManager.registerDimension(this.DIM_ID_Redlands, this.DIM_ID_Redlands);
 		
+		Redlands_Dirt = (new Redlands_Dirt()).setHardness(0.5F).setStepSound(Block.soundTypeGravel).setBlockName("dirt").setBlockTextureName("pacas_stuff" + ":" + "dirt");
+		GameRegistry.registerBlock(Redlands_Dirt, "Redlands_Dirt");
+		
+		Redlands_Grass = (new Redlands_Grass()).setHardness(0.6F).setStepSound(Block.soundTypeGrass).setBlockName("grass").setBlockTextureName("pacas_stuff" + ":" + "grass");
+		GameRegistry.registerBlock(Redlands_Grass, "Redlands_Grass");
+
+	}
+
+	@EventHandler
+	public void init(FMLInitializationEvent event){
+
 		PacasOreChest = new net.petercashel.PacasStuff.pacChest.BlockPacChest(0).setBlockName("PacasOreChest").setBlockTextureName("PacasOreChest").setHardness(3.0F).setResistance(5.0F);
     	GameRegistry.registerBlock(PacasOreChest, ItemBlock.class, "BlockPacasOreChest");
     	GameRegistry.registerTileEntity(net.petercashel.PacasStuff.pacChest.TileEntityPacChest.class, "TileEntityPacChest");
@@ -269,27 +276,17 @@ public class mod_PacasStuff {
 		GameRegistry.registerBlock(ExplosivePressurePlate, "ExplosivePressurePlate");
 		ExplosivePressurePlateWood = new ExplosivePressurePlate("planks_oak", Material.wood, BlockPressurePlate.Sensitivity.players).setHardness(50.0F).setStepSound(Block.soundTypePiston).setBlockName("pressurePlate");
 		GameRegistry.registerBlock(ExplosivePressurePlateWood, "ExplosivePressurePlateWood");
-	}
-
-	@EventHandler
-	public void init(FMLInitializationEvent event){
-
+		
 		anvilManager.Load();
 
 		addToAnvilManager();
-	}
-	
-	@EventHandler
-	public void postinit(FMLInitializationEvent event){
 		
-		HashMap<String, Fluid> map = Maps.newHashMap();
-		map.putAll(FluidRegistry.getRegisteredFluids());
-		Iterator i = map.keySet().iterator();
-		while (i.hasNext()) {
-			String str = (String) i.next();
-			System.out.println(str);
-			i.remove();
-		}
+		proxy.prepareTileEntityInformation();
+		proxy.initRenderingAndTextures();
+		proxy.registerTileEntities();
+		System.out.println("[PacasStuff] Loaded.");
+		FMLLog.log("PacasStuff", Level.INFO, "Mod Has Loaded [PacasStuff]");
+		
 	}
 
 	public void addToAnvilManager() {
@@ -328,6 +325,15 @@ public class mod_PacasStuff {
     		AEModPlugin.recipes();
     	}
 		System.out.println("[PacasStuff] Anvil Compatiblity Checks Complete.");
+		
+		HashMap<String, Fluid> map = Maps.newHashMap();
+		map.putAll(FluidRegistry.getRegisteredFluids());
+		Iterator i = map.keySet().iterator();
+		while (i.hasNext()) {
+			String str = (String) i.next();
+			System.out.println(str);
+			i.remove();
+		}
 	}
 	
 	@EventHandler
