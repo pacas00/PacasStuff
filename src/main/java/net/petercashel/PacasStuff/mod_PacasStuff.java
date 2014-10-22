@@ -220,7 +220,7 @@ public class mod_PacasStuff {
 		DimensionManager.registerProviderType(this.DIM_ID_Redlands, WorldProviderRedlands.class, false);
 		DimensionManager.registerDimension(this.DIM_ID_Redlands, this.DIM_ID_Redlands);
 		
-		Redlands_Dirt = (new Redlands_Dirt()).setHardness(0.5F).setStepSound(Block.soundTypeGravel).setBlockName("dirt").setBlockTextureName("pacas_stuff" + ":" + "dirt");
+		Redlands_Dirt = (new Redlands_Dirt()).setHardness(0.5F).setStepSound(Block.soundTypeGravel).setBlockName("Redlands_dirt").setBlockTextureName("pacas_stuff" + ":" + "dirt");
 		GameRegistry.registerBlock(Redlands_Dirt, "Redlands_Dirt");
 		
 		Redlands_Grass = (new Redlands_Grass()).setHardness(0.6F).setStepSound(Block.soundTypeGrass).setBlockName("grass").setBlockTextureName("pacas_stuff" + ":" + "grass");
