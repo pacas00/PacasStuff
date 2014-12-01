@@ -15,6 +15,7 @@ import net.petercashel.PacasStuff.anvil.TileEntityPacasAnvil_Basic;
 import net.petercashel.PacasStuff.anvil.AE_Enabled.ItemPacasAnvilRenderer;
 import net.petercashel.PacasStuff.anvil.AE_Enabled.TileEntityPacasAnvil;
 import net.petercashel.PacasStuff.anvil.AE_Enabled.TileEntityPacasAnvilRenderer;
+import net.petercashel.PacasStuff.pacChest.TileEntityPacChest;
 import net.petercashel.PacasStuff.pacChest2.TileEntityPacChest2;
 import net.petercashel.PacasStuff.pacChest2.TileEntityPacChest2Renderer;
 import cpw.mods.fml.client.registry.ClientRegistry;
@@ -59,9 +60,14 @@ public class ClientProxy extends CommonProxy{
 	@Override
 	public void registerTileEntities() {
 
-		ClientRegistry.bindTileEntitySpecialRenderer(net.petercashel.PacasStuff.pacChest.TileEntityPacChest.class, new net.petercashel.PacasStuff.pacChest.TileEntityPacChestRenderer());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPacChest2.class, new TileEntityPacChest2Renderer());
-
+		TileEntitySpecialRenderer render_Chest = new net.petercashel.PacasStuff.pacChest.TileEntityPacChestRenderer();
+		ClientRegistry.bindTileEntitySpecialRenderer(net.petercashel.PacasStuff.pacChest.TileEntityPacChest.class, render_Chest);
+		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(mod_PacasStuff.PacasOreChest), new ItemPacasAnvilRenderer_Basic(render_Chest, new TileEntityPacChest()));
+		
+		TileEntitySpecialRenderer render_Chest2 = new TileEntityPacChest2Renderer();
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPacChest2.class, render_Chest2);
+		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(mod_PacasStuff.PacasOreChest2), new ItemPacasAnvilRenderer_Basic(render_Chest2, new TileEntityPacChest2()));
+				
 		TileEntitySpecialRenderer render_Basic = new TileEntityPacasAnvilRenderer_Basic();
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPacasAnvil_Basic.class, render_Basic);
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(mod_PacasStuff.PacasAnvil_Basic), new ItemPacasAnvilRenderer_Basic(render_Basic, new TileEntityPacasAnvil_Basic()));

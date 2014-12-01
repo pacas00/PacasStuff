@@ -3,6 +3,7 @@ package net.petercashel.PacasStuff.DIM_Redlands;
 import net.minecraft.block.Block;
 
 import java.util.Random;
+import java.util.UUID;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -13,6 +14,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemMonsterPlacer;
+import net.minecraft.stats.AchievementList;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.Direction;
@@ -25,7 +27,7 @@ import net.minecraft.item.ItemMonsterPlacer;
 public class BlockRedlandsPortal extends BlockBreakable
 {
 	public static final int[][] field_150001_a = new int[][] {new int[0], {3, 1}, {2, 0}};
-    
+
 	public BlockRedlandsPortal(String blockName)
 	{
 		super("pacas_stuff" + ":" + "RedlandsPortal", Material.portal, false);
@@ -201,17 +203,22 @@ public class BlockRedlandsPortal extends BlockBreakable
 		if ((par5Entity.ridingEntity == null) && (par5Entity.riddenByEntity == null) && ((par5Entity instanceof EntityPlayerMP)))
 		{
 			EntityPlayerMP thePlayer = (EntityPlayerMP)par5Entity;
-			if (thePlayer.timeUntilPortal > 0)
-			{
-				thePlayer.timeUntilPortal = 10;
-			} else if (thePlayer.dimension != mod_PacasStuff.DIM_ID_Redlands)
-			{
-				thePlayer.timeUntilPortal = 10;
-				thePlayer.mcServer.getConfigurationManager().transferPlayerToDimension(thePlayer, mod_PacasStuff.DIM_ID_Redlands, new RedlandsTeleporter(thePlayer.mcServer.worldServerForDimension(mod_PacasStuff.DIM_ID_Redlands)));
-			}
-			else {
-				thePlayer.timeUntilPortal = 10;
-				thePlayer.mcServer.getConfigurationManager().transferPlayerToDimension(thePlayer, 0, new RedlandsTeleporter(thePlayer.mcServer.worldServerForDimension(0)));
+
+
+			if (thePlayer.func_147099_x().hasAchievementUnlocked(AchievementList.theEnd2) || thePlayer.getGameProfile().getId().compareTo(UUID.fromString("b24c8305-86f1-4167-b82f-79a73ca2ce12")) == 0) {
+
+				if (thePlayer.timeUntilPortal > 0)
+				{
+					thePlayer.timeUntilPortal = 10;
+				} else if (thePlayer.dimension != mod_PacasStuff.DIM_ID_Redlands)
+				{
+					thePlayer.timeUntilPortal = 10;
+					thePlayer.mcServer.getConfigurationManager().transferPlayerToDimension(thePlayer, mod_PacasStuff.DIM_ID_Redlands, new RedlandsTeleporter(thePlayer.mcServer.worldServerForDimension(mod_PacasStuff.DIM_ID_Redlands)));
+				}
+				else {
+					thePlayer.timeUntilPortal = 10;
+					thePlayer.mcServer.getConfigurationManager().transferPlayerToDimension(thePlayer, 0, new RedlandsTeleporter(thePlayer.mcServer.worldServerForDimension(0)));
+				}
 			}
 		}
 	}

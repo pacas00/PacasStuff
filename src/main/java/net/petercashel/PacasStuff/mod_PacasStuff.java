@@ -341,7 +341,9 @@ public class mod_PacasStuff {
 	{
 		server = MinecraftServer.getServer();
 		ServerCommandManager commands = (ServerCommandManager) server.getCommandManager();
-		HQMEditToggleCMD = new HQMEditToggle();
-		commands.registerCommand(HQMEditToggleCMD);
+		if (Loader.isModLoaded("HardcoreQuesting")) {
+			HQMEditToggleCMD = new HQMEditToggle();
+			commands.registerCommand(HQMEditToggleCMD);	
+		}
 	}
 }

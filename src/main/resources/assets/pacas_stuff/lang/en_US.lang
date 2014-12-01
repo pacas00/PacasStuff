@@ -1,11 +1,11 @@
 item.PacasOreChest.name=Pacas00's Chest
 tile.PacasOreChest.name=Pacas00's Chest
-container.PacChest=Pacas00's Chest
-container.PacChestDouble=Pacas00's Chest
+container.Pacchest=Pacas00's Chest
+container.PacchestDouble=Pacas00's Large Chest
 item.PacasOreChest2.name=Bottemless Chest
 tile.PacasOreChest2.name=Bottemless Chest
-container.PacChest2=Bottemless Chest
-container.PacChest2Double=Bottemless Chest
+container.Pacchest2=Bottemless Chest
+container.Pacchest2Double=Bottemless Large Chest
 
 tile.PacasAnvil.name=Networked Anvil
 tile.PacasAnvil_Basic.name=Managed Anvil

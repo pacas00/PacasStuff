@@ -446,22 +446,22 @@ public class BlockPacChest extends BlockContainer
 		{
 			if (p_149951_1_.getBlock(p_149951_2_ - 1, p_149951_3_, p_149951_4_) == this)
 			{
-				object = new InventoryLargeChest("container.chestDouble", (TileEntityPacChest)p_149951_1_.getTileEntity(p_149951_2_ - 1, p_149951_3_, p_149951_4_), (IInventory)object);
+				object = new InventoryLargeChest("container.PacchestDouble", (TileEntityPacChest)p_149951_1_.getTileEntity(p_149951_2_ - 1, p_149951_3_, p_149951_4_), (IInventory)object);
 			}
 
 			if (p_149951_1_.getBlock(p_149951_2_ + 1, p_149951_3_, p_149951_4_) == this)
 			{
-				object = new InventoryLargeChest("container.chestDouble", (IInventory)object, (TileEntityPacChest)p_149951_1_.getTileEntity(p_149951_2_ + 1, p_149951_3_, p_149951_4_));
+				object = new InventoryLargeChest("container.PacchestDouble", (IInventory)object, (TileEntityPacChest)p_149951_1_.getTileEntity(p_149951_2_ + 1, p_149951_3_, p_149951_4_));
 			}
 
 			if (p_149951_1_.getBlock(p_149951_2_, p_149951_3_, p_149951_4_ - 1) == this)
 			{
-				object = new InventoryLargeChest("container.chestDouble", (TileEntityPacChest)p_149951_1_.getTileEntity(p_149951_2_, p_149951_3_, p_149951_4_ - 1), (IInventory)object);
+				object = new InventoryLargeChest("container.PacchestDouble", (TileEntityPacChest)p_149951_1_.getTileEntity(p_149951_2_, p_149951_3_, p_149951_4_ - 1), (IInventory)object);
 			}
 
 			if (p_149951_1_.getBlock(p_149951_2_, p_149951_3_, p_149951_4_ + 1) == this)
 			{
-				object = new InventoryLargeChest("container.chestDouble", (IInventory)object, (TileEntityPacChest)p_149951_1_.getTileEntity(p_149951_2_, p_149951_3_, p_149951_4_ + 1));
+				object = new InventoryLargeChest("container.PacchestDouble", (IInventory)object, (TileEntityPacChest)p_149951_1_.getTileEntity(p_149951_2_, p_149951_3_, p_149951_4_ + 1));
 			}
 
 			IInventory iinventory = SetInventory((IInventory)object);

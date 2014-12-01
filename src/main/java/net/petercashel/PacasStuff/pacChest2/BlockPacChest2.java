@@ -470,22 +470,22 @@ public class BlockPacChest2 extends BlockContainer
 		{
 			if (p_149951_1_.getBlock(p_149951_2_ - 1, p_149951_3_, p_149951_4_) == this)
 			{
-				object = new InventoryLargeChest("container.chestDouble", (TileEntityPacChest2)p_149951_1_.getTileEntity(p_149951_2_ - 1, p_149951_3_, p_149951_4_), (IInventory)object);
+				object = new InventoryLargeChest("container.Pacchest2Double", (TileEntityPacChest2)p_149951_1_.getTileEntity(p_149951_2_ - 1, p_149951_3_, p_149951_4_), (IInventory)object);
 			}
 
 			if (p_149951_1_.getBlock(p_149951_2_ + 1, p_149951_3_, p_149951_4_) == this)
 			{
-				object = new InventoryLargeChest("container.chestDouble", (IInventory)object, (TileEntityPacChest2)p_149951_1_.getTileEntity(p_149951_2_ + 1, p_149951_3_, p_149951_4_));
+				object = new InventoryLargeChest("container.Pacchest2Double", (IInventory)object, (TileEntityPacChest2)p_149951_1_.getTileEntity(p_149951_2_ + 1, p_149951_3_, p_149951_4_));
 			}
 
 			if (p_149951_1_.getBlock(p_149951_2_, p_149951_3_, p_149951_4_ - 1) == this)
 			{
-				object = new InventoryLargeChest("container.chestDouble", (TileEntityPacChest2)p_149951_1_.getTileEntity(p_149951_2_, p_149951_3_, p_149951_4_ - 1), (IInventory)object);
+				object = new InventoryLargeChest("container.Pacchest2Double", (TileEntityPacChest2)p_149951_1_.getTileEntity(p_149951_2_, p_149951_3_, p_149951_4_ - 1), (IInventory)object);
 			}
 
 			if (p_149951_1_.getBlock(p_149951_2_, p_149951_3_, p_149951_4_ + 1) == this)
 			{
-				object = new InventoryLargeChest("container.chestDouble", (IInventory)object, (TileEntityPacChest2)p_149951_1_.getTileEntity(p_149951_2_, p_149951_3_, p_149951_4_ + 1));
+				object = new InventoryLargeChest("container.Pacchest2Double", (IInventory)object, (TileEntityPacChest2)p_149951_1_.getTileEntity(p_149951_2_, p_149951_3_, p_149951_4_ + 1));
 			}
 
 			this.boxItem = ((TileEntityPacChest2)p_149951_1_.getTileEntity(p_149951_2_, p_149951_3_, p_149951_4_)).getBoxItem();
@@ -502,6 +502,7 @@ public class BlockPacChest2 extends BlockContainer
 	public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_)
 	{
 		TileEntityPacChest2 TileEntityPacChest2 = new TileEntityPacChest2();
+		TileEntityPacChest2.setBoxItem(new ItemStack(Items.stick));		
 		return TileEntityPacChest2;
 	}
 
