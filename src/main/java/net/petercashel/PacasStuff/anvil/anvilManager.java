@@ -25,6 +25,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.*;
+import net.petercashel.PacasStuff.mod_PacasStuff;
 
 /**
  * anvilManager handles items and materials for PacasAnvilManaged.
@@ -231,11 +232,16 @@ public class anvilManager {
 	 */
 	public static boolean Load() {
 		String content = "";
+		new File("config" + File.separator).mkdir();
 		try {
 			content = readFile("config" + File.separator + "anvil" + File.separator + "anvilConfig.json", Charset.defaultCharset());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			AnvilCompatibility AnvilCompat = new net.petercashel.PacasStuff.anvil.AnvilCompatibility();
+			if (mod_PacasStuff.CompatEnable) {
+				AnvilCompat.init();
+			}
 			return false;
 		}
 		JsonElement jelement = new JsonParser().parse(content);

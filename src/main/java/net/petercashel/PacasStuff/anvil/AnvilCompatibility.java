@@ -2,6 +2,7 @@ package net.petercashel.PacasStuff.anvil;
 
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.src.*;
@@ -11,6 +12,30 @@ import net.petercashel.PacasStuff.mod_PacasStuff;
 public class AnvilCompatibility {
 
 	public void init() {
+		
+		//Vanilla Compat
+		
+		anvilManager.registerItem(new ItemStack(Items.diamond_sword), new ItemStack(Items.diamond));
+		anvilManager.registerItem(new ItemStack(Items.diamond_pickaxe), new ItemStack(Items.diamond), 3);
+		anvilManager.registerItem(new ItemStack(Items.diamond_shovel), new ItemStack(Items.diamond), 1);
+		anvilManager.registerItem(new ItemStack(Items.diamond_hoe), new ItemStack(Items.diamond), 1);
+		anvilManager.registerItem(new ItemStack(Items.diamond_axe), new ItemStack(Items.diamond), 3);
+
+		anvilManager.registerItem(new ItemStack(Items.iron_sword), new ItemStack(Items.iron_ingot));
+		anvilManager.registerItem(new ItemStack(Items.iron_pickaxe), new ItemStack(Items.iron_ingot), 3);
+		anvilManager.registerItem(new ItemStack(Items.iron_shovel), new ItemStack(Items.iron_ingot), 1);
+		anvilManager.registerItem(new ItemStack(Items.iron_hoe), new ItemStack(Items.iron_ingot), 1);
+		anvilManager.registerItem(new ItemStack(Items.iron_axe), new ItemStack(Items.iron_ingot), 3);
+
+		anvilManager.registerItem(new ItemStack(Items.golden_sword), new ItemStack(Items.gold_ingot));
+		anvilManager.registerItem(new ItemStack(Items.golden_pickaxe), new ItemStack(Items.gold_ingot));
+		anvilManager.registerItem(new ItemStack(Items.golden_shovel), new ItemStack(Items.gold_ingot), 1);
+		anvilManager.registerItem(new ItemStack(Items.golden_hoe), new ItemStack(Items.gold_ingot), 1);
+		anvilManager.registerItem(new ItemStack(Items.golden_axe), new ItemStack(Items.gold_ingot));
+
+		anvilManager.registerItem(new ItemStack(Items.bow), new ItemStack(Items.stick));
+		anvilManager.registerItem(new ItemStack(Items.fishing_rod), new ItemStack(Items.stick));
+		
 		
 		if (Loader.isModLoaded("IC2") && mod_PacasStuff.CompatIC2) {
 

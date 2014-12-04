@@ -93,8 +93,6 @@ public class mod_PacasStuff {
 	
 	public static final String CATEGORY_GENERAL = "general";
 
-	private net.petercashel.PacasStuff.anvil.AnvilCompatibility AnvilCompat;
-
 	private MinecraftServer server;
 
 	private HQMEditToggle HQMEditToggleCMD;
@@ -279,8 +277,6 @@ public class mod_PacasStuff {
 		
 		anvilManager.Load();
 
-		addToAnvilManager();
-		
 		proxy.prepareTileEntityInformation();
 		proxy.initRenderingAndTextures();
 		proxy.registerTileEntities();
@@ -288,38 +284,10 @@ public class mod_PacasStuff {
 		FMLLog.log("PacasStuff", Level.INFO, "Mod Has Loaded [PacasStuff]");
 		
 	}
-
-	public void addToAnvilManager() {
-		anvilManager.registerItem(new ItemStack(Items.diamond_sword), new ItemStack(Items.diamond));
-		anvilManager.registerItem(new ItemStack(Items.diamond_pickaxe), new ItemStack(Items.diamond), 3);
-		anvilManager.registerItem(new ItemStack(Items.diamond_shovel), new ItemStack(Items.diamond), 1);
-		anvilManager.registerItem(new ItemStack(Items.diamond_hoe), new ItemStack(Items.diamond), 1);
-		anvilManager.registerItem(new ItemStack(Items.diamond_axe), new ItemStack(Items.diamond), 3);
-
-		anvilManager.registerItem(new ItemStack(Items.iron_sword), new ItemStack(Items.iron_ingot));
-		anvilManager.registerItem(new ItemStack(Items.iron_pickaxe), new ItemStack(Items.iron_ingot), 3);
-		anvilManager.registerItem(new ItemStack(Items.iron_shovel), new ItemStack(Items.iron_ingot), 1);
-		anvilManager.registerItem(new ItemStack(Items.iron_hoe), new ItemStack(Items.iron_ingot), 1);
-		anvilManager.registerItem(new ItemStack(Items.iron_axe), new ItemStack(Items.iron_ingot), 3);
-
-		anvilManager.registerItem(new ItemStack(Items.golden_sword), new ItemStack(Items.gold_ingot));
-		anvilManager.registerItem(new ItemStack(Items.golden_pickaxe), new ItemStack(Items.gold_ingot));
-		anvilManager.registerItem(new ItemStack(Items.golden_shovel), new ItemStack(Items.gold_ingot), 1);
-		anvilManager.registerItem(new ItemStack(Items.golden_hoe), new ItemStack(Items.gold_ingot), 1);
-		anvilManager.registerItem(new ItemStack(Items.golden_axe), new ItemStack(Items.gold_ingot));
-
-		anvilManager.registerItem(new ItemStack(Items.bow), new ItemStack(Items.stick));
-		anvilManager.registerItem(new ItemStack(Items.fishing_rod), new ItemStack(Items.stick));
-
-	}
 	
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
 
-		AnvilCompat = new net.petercashel.PacasStuff.anvil.AnvilCompatibility();
-		if (CompatEnable) {
-			AnvilCompat.init();
-		}
 		recipes();
 		if (Loader.isModLoaded("appliedenergistics2")) {
     		AEModPlugin.recipes();
