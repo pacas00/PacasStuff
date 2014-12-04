@@ -38,7 +38,7 @@ apply plugin: 'java'
 apply plugin: 'forge'
 
 def buildnumber = System.getenv("BUILD_NUMBER") ?: "dev"
-version = "v1.0." + buildnumber.toString()
+version = "v1.1." + buildnumber.toString()
 group= "net.petercashel.PacasStuff" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "PacasStuff"
 
@@ -46,7 +46,7 @@ def mavenpass = System.getenv("maven_pass") ?: "1"
 def mavenuser = System.getenv("maven_user") ?: "1"
 
 minecraft {
-    version = "1.7.10-10.13.2.1231"
+    version = "1.7.10-10.13.2.1236"
     assetDir = "eclipse/assets"
     
     replaceIn "mod_PacasStuff.java"
