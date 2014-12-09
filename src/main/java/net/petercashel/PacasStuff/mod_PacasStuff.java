@@ -42,6 +42,7 @@ import net.petercashel.PacasStuff.ExplosiveBlocks.blocks.*;
 import net.petercashel.PacasStuff.ModSpecific.AEModPlugin;
 import net.petercashel.PacasStuff.anvil.BlockPacasAnvil_basic;
 import net.petercashel.PacasStuff.anvil.anvilManager;
+import net.petercashel.PacasStuff.command.DebugCommandSender;
 import net.petercashel.PacasStuff.command.HQMEditToggle;
 import cpw.mods.fml.common.*;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -50,6 +51,8 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.network.FMLEventChannel;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 
@@ -96,6 +99,8 @@ public class mod_PacasStuff {
 	private MinecraftServer server;
 
 	private HQMEditToggle HQMEditToggleCMD;
+
+	private DebugCommandSender PacasDebugCommand;
 	
 	/** Dimensions **/ // Defaults set here. weird is happening
 	public static int DIM_ID_WOP;
@@ -138,6 +143,11 @@ public class mod_PacasStuff {
 	public static Block ExplosivePressurePlateWood;
 
 	public static int Redlands_GrassRendererID;
+	
+	
+	
+	public static FMLEventChannel PacasDebugChannel;
+	
 
 	
 	public void recipes() {
@@ -229,6 +239,8 @@ public class mod_PacasStuff {
 	@EventHandler
 	public void init(FMLInitializationEvent event){
 
+		PacasDebugChannel = NetworkRegistry.INSTANCE.newEventDrivenChannel("PacasDebugChannel");
+		
 		PacasOreChest = new net.petercashel.PacasStuff.pacChest.BlockPacChest(0).setBlockName("PacasOreChest").setBlockTextureName("PacasOreChest").setHardness(3.0F).setResistance(5.0F);
     	GameRegistry.registerBlock(PacasOreChest, ItemBlock.class, "BlockPacasOreChest");
     	GameRegistry.registerTileEntity(net.petercashel.PacasStuff.pacChest.TileEntityPacChest.class, "TileEntityPacChest");
@@ -280,6 +292,7 @@ public class mod_PacasStuff {
 		proxy.prepareTileEntityInformation();
 		proxy.initRenderingAndTextures();
 		proxy.registerTileEntities();
+		proxy.load();
 		System.out.println("[PacasStuff] Loaded.");
 		FMLLog.log("PacasStuff", Level.INFO, "Mod Has Loaded [PacasStuff]");
 		
@@ -293,15 +306,6 @@ public class mod_PacasStuff {
     		AEModPlugin.recipes();
     	}
 		System.out.println("[PacasStuff] Anvil Compatiblity Checks Complete.");
-		
-		HashMap<String, Fluid> map = Maps.newHashMap();
-		map.putAll(FluidRegistry.getRegisteredFluids());
-		Iterator i = map.keySet().iterator();
-		while (i.hasNext()) {
-			String str = (String) i.next();
-			System.out.println(str);
-			i.remove();
-		}
 	}
 	
 	@EventHandler
@@ -313,5 +317,7 @@ public class mod_PacasStuff {
 			HQMEditToggleCMD = new HQMEditToggle();
 			commands.registerCommand(HQMEditToggleCMD);	
 		}
+		PacasDebugCommand = new DebugCommandSender();
+		commands.registerCommand(PacasDebugCommand);
 	}
 }
