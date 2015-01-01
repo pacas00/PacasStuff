@@ -55,7 +55,8 @@ minecraft {
 
 dependencies {
     compile files('lib/fake_HQM.jar');		// one class jar containing a boolean to compile against
-	compile "appeng:appliedenergistics2:rv2-beta-6:dev"
+	compile files('lib/appliedenergistics2-rv2-beta-6-dev.jar');		// App Eng in libs
+	//compile "appeng:appliedenergistics2:rv2-stable-1:dev"
 }
 
 processResources
