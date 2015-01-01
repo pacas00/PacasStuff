@@ -15,6 +15,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.petercashel.PacasStuff.mod_PacasStuff;
 import appeng.api.config.Actionable;
+import appeng.api.implementations.tiles.IColorableTile;
 import appeng.api.networking.GridFlags;
 import appeng.api.networking.IGrid;
 import appeng.api.networking.IGridNode;
@@ -27,6 +28,7 @@ import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.util.AECableType;
 import appeng.api.util.AEColor;
+import appeng.tile.TileEvent;
 import appeng.tile.events.AETileEventHandler;
 import appeng.tile.events.TileEventType;
 import appeng.tile.grid.AENetworkTile;
@@ -36,81 +38,25 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class AnvilAENetBaseTile extends AENetworkTile {
+public class AnvilAENetBaseTile extends AENetworkTile implements IColorableTile {
 	
 	
 	public AnvilAENetBaseTile() {
-		// Register our event handler
-		this.addNewHandler( this.eventHandler );
+		
 	}
 	
 	protected static final String NBTKEY_COLOR = "TEColor";
 	protected static final String NBTKEY_ATTACHMENT = "TEAttachSide";
+	protected static final String NBTKEY_ISCOLORFORCED = "ColorForced";
+	public static final AEColor[] AE_COLOR = AEColor.values();
+	
+	protected boolean isColorForced = false;
 
 	protected int attachmentSide;
 
 	protected IMEMonitor<IAEItemStack> monitor = null;
 
 	protected boolean isActive;
-
-	private AETileEventHandler eventHandler = new AETileEventHandler( TileEventType.WORLD_NBT, TileEventType.NETWORK )
-	{
-		@Override
-		public void writeToNBT( NBTTagCompound data )
-		{
-			// Write our color to the tag
-			data.setInteger( AnvilAENetBaseTile.NBTKEY_COLOR, AnvilAENetBaseTile.this.getGridColor().ordinal() );
-
-			// Write the attachment side to the tag
-			data.setInteger( AnvilAENetBaseTile.NBTKEY_ATTACHMENT, AnvilAENetBaseTile.this.attachmentSide );
-		}
-
-		@Override
-		public void readFromNBT( NBTTagCompound data )
-		{
-			int attachmentSideFromNBT = ForgeDirection.UNKNOWN.ordinal();
-
-			// Do we have the color key?
-			if( data.hasKey( AnvilAENetBaseTile.NBTKEY_COLOR ) )
-			{
-				// Read the color from the tag
-				AnvilAENetBaseTile.this.setGridColor( AEColor.values()[data.getInteger( AnvilAENetBaseTile.NBTKEY_COLOR )] );
-			}
-
-			// Do we have the attachment key?
-			if( data.hasKey( AnvilAENetBaseTile.NBTKEY_ATTACHMENT ) )
-			{
-				// Read the attachment side
-				attachmentSideFromNBT = data.getInteger( AnvilAENetBaseTile.NBTKEY_ATTACHMENT );
-			}
-
-			// Setup the tile
-			AnvilAENetBaseTile.this.setupProvider( attachmentSideFromNBT );
-		}
-
-		@Override
-		public void writeToStream( ByteBuf data ) throws IOException
-		{
-			// Write the color data to the stream
-			data.writeInt( AnvilAENetBaseTile.this.getGridColor().ordinal() );
-
-			// Write the activity to the stream
-			data.writeBoolean( AnvilAENetBaseTile.this.isActive() );
-		}
-
-		@Override
-		@SideOnly(Side.CLIENT)
-		public boolean readFromStream( ByteBuf data ) throws IOException
-		{
-			// Read the color from the stream
-			AnvilAENetBaseTile.this.setGridColor( AEColor.values()[data.readInt()] );
-
-			// Read the activity
-			AnvilAENetBaseTile.this.isActive = data.readBoolean();
-
-			return true;
-		}
-	};
 
 	/**
 	 * Configures the provider based on the specified
@@ -377,5 +323,126 @@ public class AnvilAENetBaseTile extends AENetworkTile {
 
 		return this.isActive;
 	}
+	
+	@TileEvent(TileEventType.WORLD_NBT_READ)
+	public void onLoadNBT( final NBTTagCompound data )
+	{
+		int attachmentSideFromNBT = ForgeDirection.UNKNOWN.ordinal();
+
+		// Do we have the forced key?
+		if( data.hasKey( AnvilAENetBaseTile.NBTKEY_ISCOLORFORCED ) )
+		{
+			this.isColorForced = data.getBoolean( AnvilAENetBaseTile.NBTKEY_ISCOLORFORCED );
+		}
+
+		// Do we have the color key?
+		if( data.hasKey( AnvilAENetBaseTile.NBTKEY_COLOR ) )
+		{
+			// Read the color from the tag
+			this.setProviderColor( AE_COLOR[data.getInteger( AnvilAENetBaseTile.NBTKEY_COLOR )] );
+		}
+
+		// Do we have the attachment key?
+		if( data.hasKey( AnvilAENetBaseTile.NBTKEY_ATTACHMENT ) )
+		{
+			// Read the attachment side
+			attachmentSideFromNBT = data.getInteger( AnvilAENetBaseTile.NBTKEY_ATTACHMENT );
+		}
+
+		// Setup the tile
+		this.setupProvider( attachmentSideFromNBT );
+	}
+	
+	/**
+	 * Sets the color of the provider.
+	 * This does not set the isColorForced flag to true.
+	 * 
+	 * @param gridColor
+	 */
+	protected void setProviderColor( final AEColor gridColor )
+	{
+		// Set our color to match
+		this.gridProxy.myColor = gridColor;
+
+		// Are we server side?
+		if( FMLCommonHandler.instance().getEffectiveSide().isServer() )
+		{
+			// Get the grid node
+			IGridNode gridNode = this.gridProxy.getNode();
+
+			// Do we have a grid node?
+			if( gridNode != null )
+			{
+				// Update the grid node
+				this.gridProxy.getNode().updateState();
+			}
+
+			// Mark the tile as needing updates and to be saved
+			this.markForUpdate();
+			this.saveChanges();
+		}
+	}
+
+	/**
+	 * Get's the color of the provider
+	 */
+	@Override
+	public AEColor getColor()
+	{
+		return this.gridProxy.myColor;
+	}
+
+	/**
+	 * Forces a color change for the provider.
+	 * Called when the provider's color is changed via the ColorApplicator item.
+	 */
+	@Override
+	public boolean recolourBlock( final ForgeDirection side, final AEColor color, final EntityPlayer player )
+	{
+		// Mark our color as forced
+		this.isColorForced = true;
+
+		// Set our color
+		this.setProviderColor( color );
+
+		return true;
+	}
+	
+		@TileEvent(TileEventType.NETWORK_READ)
+		@SideOnly(Side.CLIENT)
+		public boolean onReceiveNetworkData( final ByteBuf data )
+		{
+			// Read the color from the stream
+			this.setProviderColor( AE_COLOR[data.readInt()] );
+	
+			// Read the activity
+			this.isActive = data.readBoolean();
+	
+			return true;
+		}
+	
+		@TileEvent(TileEventType.WORLD_NBT_WRITE)
+		public void onSaveNBT( final NBTTagCompound data )
+		{
+			// Write our color to the tag
+			data.setInteger( AnvilAENetBaseTile.NBTKEY_COLOR, this.getGridColor().ordinal() );
+	
+			// Write the attachment side to the tag
+			data.setInteger( AnvilAENetBaseTile.NBTKEY_ATTACHMENT, this.attachmentSide );
+	
+			// Write the forced color flag
+			data.setBoolean( AnvilAENetBaseTile.NBTKEY_ISCOLORFORCED, this.isColorForced );
+		}
+	
+		@TileEvent(TileEventType.NETWORK_WRITE)
+		public void onSendNetworkData( final ByteBuf data ) throws IOException
+		{
+			// Write the color data to the stream
+			data.writeInt( this.getGridColor().ordinal() );
+	
+			// Write the activity to the stream
+			data.writeBoolean( this.isActive() );
+		}
+	
 
 }

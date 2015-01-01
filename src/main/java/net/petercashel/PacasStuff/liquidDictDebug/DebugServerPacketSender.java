@@ -28,7 +28,7 @@ public class DebugServerPacketSender {
 		bb.clear();
 		bb.writeInt(0);
 		FMLProxyPacket pkt = new FMLProxyPacket(bb, "PacasDebugChannel");
-		System.out.println("Player is " + ISender.getCommandSenderName());
+		System.out.println("Dumping Server Fluid Dict");
 		mod_PacasStuff.PacasDebugChannel.sendTo(pkt, (EntityPlayerMP) MinecraftServer.getServer().getEntityWorld().getPlayerEntityByName(ISender.getCommandSenderName()));
 		
 		BufferedWriter writer = null;

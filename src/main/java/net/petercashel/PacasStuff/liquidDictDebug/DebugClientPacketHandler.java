@@ -44,7 +44,7 @@ public class DebugClientPacketHandler {
 			}
 			
 			//Dump Liquid Dict
-			System.out.println("Client Fluid Dict");
+			System.out.println("Dumping Client Fluid Dict");
 			HashMap<String, Fluid> map = Maps.newHashMap();
 			map.putAll(FluidRegistry.getRegisteredFluids());
 			Iterator i = map.keySet().iterator();
