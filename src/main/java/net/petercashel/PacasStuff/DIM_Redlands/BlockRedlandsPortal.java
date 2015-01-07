@@ -205,7 +205,7 @@ public class BlockRedlandsPortal extends BlockBreakable
 			EntityPlayerMP thePlayer = (EntityPlayerMP)par5Entity;
 
 
-			if (thePlayer.func_147099_x().hasAchievementUnlocked(AchievementList.theEnd2) || thePlayer.getGameProfile().getId().compareTo(UUID.fromString("b24c8305-86f1-4167-b82f-79a73ca2ce12")) == 0) {
+			if (thePlayer.func_147099_x().hasAchievementUnlocked(AchievementList.theEnd2) || thePlayer.getGameProfile().getId().equals(UUID.fromString("b24c8305-86f1-4167-b82f-79a73ca2ce12"))) {
 
 				if (thePlayer.timeUntilPortal > 0)
 				{
@@ -219,7 +219,7 @@ public class BlockRedlandsPortal extends BlockBreakable
 					thePlayer.timeUntilPortal = 10;
 					thePlayer.mcServer.getConfigurationManager().transferPlayerToDimension(thePlayer, 0, new RedlandsTeleporter(thePlayer.mcServer.worldServerForDimension(0)));
 				}
-			}
+			} else { }
 		}
 	}
 

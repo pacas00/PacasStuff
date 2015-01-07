@@ -203,7 +203,7 @@ public class BlockWOPPortal extends BlockBreakable
 		if ((par5Entity.ridingEntity == null) && (par5Entity.riddenByEntity == null) && ((par5Entity instanceof EntityPlayerMP)))
 		{
 			EntityPlayerMP thePlayer = (EntityPlayerMP)par5Entity;
-			if (thePlayer.func_147099_x().hasAchievementUnlocked(AchievementList.field_150964_J) || thePlayer.getGameProfile().getId().compareTo(UUID.fromString("b24c8305-86f1-4167-b82f-79a73ca2ce12")) == 0) {
+			if (thePlayer.func_147099_x().hasAchievementUnlocked(AchievementList.field_150964_J) || thePlayer.getGameProfile().getId().equals(UUID.fromString("b24c8305-86f1-4167-b82f-79a73ca2ce12"))) {
 				if (thePlayer.timeUntilPortal > 0)
 				{
 					thePlayer.timeUntilPortal = 10;
@@ -216,7 +216,7 @@ public class BlockWOPPortal extends BlockBreakable
 					thePlayer.timeUntilPortal = 10;
 					thePlayer.mcServer.getConfigurationManager().transferPlayerToDimension(thePlayer, 0, new WOPTeleporter(thePlayer.mcServer.worldServerForDimension(0)));
 				}
-			}
+			} else { }
 		}
 	}
 
