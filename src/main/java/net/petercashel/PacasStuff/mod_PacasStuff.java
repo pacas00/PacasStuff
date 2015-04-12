@@ -27,8 +27,6 @@ import net.minecraftforge.common.BiomeManager;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.petercashel.PacasStuff.DIM_Common.BlockPortalFire;
 import net.petercashel.PacasStuff.DIM_Redlands.BiomeGenRedlands;
 import net.petercashel.PacasStuff.DIM_Redlands.BlockRedlandsPortal;

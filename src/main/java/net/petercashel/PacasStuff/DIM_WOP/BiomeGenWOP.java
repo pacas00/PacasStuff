@@ -1,5 +1,6 @@
 package net.petercashel.PacasStuff.DIM_WOP;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import cpw.mods.fml.common.Loader;
@@ -28,7 +29,11 @@ import net.petercashel.PacasStuff.mod_PacasStuff;
 public class BiomeGenWOP extends BiomeGenBase {
 	
 	public static final BiomeGenBase.Height height_WOP = new BiomeGenBase.Height(0.165F, 0.125F);
-
+	public static Random r = new Random();
+	public static ArrayList<Block> blkRandom = new ArrayList<Block>();
+	public static Block stoneBlock = Blocks.stone;
+    
+    
 	public BiomeGenWOP(int i) {
 		super(i);
 		this.spawnableMonsterList.clear();
@@ -43,13 +48,26 @@ public class BiomeGenWOP extends BiomeGenBase {
         this.spawnableCreatureList.add(new BiomeGenBase.SpawnListEntry(EntityWolf.class, 5, 4, 4));
         
         this.spawnableWaterCreatureList.add(new BiomeGenBase.SpawnListEntry(EntitySquid.class, 10, 4, 4));
-        
+                
 		this.topBlock = (Blocks.grass);
 		this.fillerBlock = (Blocks.dirt);
+		
 		
 		this.enableSnow = false;
 		this.enableRain = true;
 		
+		blkRandom.add(Blocks.stone);
+		blkRandom.add(Blocks.sand);
+		blkRandom.add(Blocks.stone);
+		blkRandom.add(Blocks.glass);
+		blkRandom.add(Blocks.log);
+		blkRandom.add(Blocks.stone);
+		blkRandom.add(Blocks.clay);
+		blkRandom.add(Blocks.stone);
+		blkRandom.add(Blocks.emerald_block);
+		blkRandom.add(Blocks.diamond_block);
+		blkRandom.add(Blocks.gold_block);
+		blkRandom.add(Blocks.coal_ore);
 		
 		this.theBiomeDecorator = this.createBiomeDecorator();
 		
@@ -106,7 +124,8 @@ public class BiomeGenWOP extends BiomeGenBase {
         int i1 = p_150560_5_ & 15;
         int j1 = p_150560_6_ & 15;
         int k1 = p_150560_3_.length / 256;
-
+        Block stn = stoneBlock;
+        
         for (int l1 = 255; l1 >= 0; --l1)
         {
             int i2 = (j1 * 16 + i1) * k1 + l1;
@@ -131,7 +150,7 @@ public class BiomeGenWOP extends BiomeGenBase {
                                 b0 = 0;
                                 block1 = Blocks.stone;
                             }
-                            else if (l1 >= 59 && l1 <= 64)
+                           else if (l1 >= 59 && l1 <= 64)
                             {
                                 block = mod_PacasStuff.Redlands_Grass;
                                 b0 = (byte)(this.field_150604_aj & 255);
@@ -181,6 +200,13 @@ public class BiomeGenWOP extends BiomeGenBase {
                                 block1 = Blocks.sandstone;
                             }
                         }
+                        //p_150560_3_[i2]
+                        if (l1 < 40 - l && l1 > 20)
+                        {
+                        	if (p_150560_3_[i2] == Blocks.stone)
+                        	p_150560_3_[i2] = stn;
+                        }
+                        
                     }
                 }
                 else

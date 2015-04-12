@@ -93,5 +93,12 @@ public class WorldProviderRedlands extends WorldProvider {
     {
         return false;
     }
+	
+	@Override
+	/** is this a surface world or an underworld */
+	public boolean isSurfaceWorld()
+	{
+		return true;
+	}
 
 }

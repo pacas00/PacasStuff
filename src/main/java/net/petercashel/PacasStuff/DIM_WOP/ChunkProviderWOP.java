@@ -264,7 +264,7 @@ public class ChunkProviderWOP implements IChunkProvider {
      */
     public Chunk provideChunk(int p_73154_1_, int p_73154_2_)
     {
-        this.rand.setSeed((long)p_73154_1_ * 341873128712L + (long)p_73154_2_ * 132897987541L);
+    	this.rand.setSeed((long)p_73154_1_ * 341873128712L + (long)p_73154_2_ * 132897987541L);
         Block[] ablock = new Block[65536];
         byte[] abyte = new byte[65536];
         this.func_147424_a(p_73154_1_, p_73154_2_, ablock);
@@ -273,6 +273,7 @@ public class ChunkProviderWOP implements IChunkProvider {
         this.caveGenerator.func_151539_a(this, this.worldObj, p_73154_1_, p_73154_2_, ablock);
         this.ravineGenerator.func_151539_a(this, this.worldObj, p_73154_1_, p_73154_2_, ablock);
 
+        BiomeGenWOP.stoneBlock = BiomeGenWOP.blkRandom.get(  ( BiomeGenWOP.r.nextInt(BiomeGenWOP.blkRandom.size()*9) )/10  );
         if (this.mapFeaturesEnabled)
         {
             this.mineshaftGenerator.func_151539_a(this, this.worldObj, p_73154_1_, p_73154_2_, ablock);
@@ -437,7 +438,6 @@ public class ChunkProviderWOP implements IChunkProvider {
         long j1 = this.rand.nextLong() / 2L * 2L + 1L;
         this.rand.setSeed((long)p_73153_2_ * i1 + (long)p_73153_3_ * j1 ^ this.worldObj.getSeed());
         boolean flag = false;
-
         MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Pre(p_73153_1_, worldObj, rand, p_73153_2_, p_73153_3_, flag));
 
         if (this.mapFeaturesEnabled)
