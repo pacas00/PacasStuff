@@ -34,8 +34,8 @@ repositories {
     }
 }
 
-apply plugin: 'java'
 apply plugin: 'forge'
+apply plugin: 'java'
 
 def buildnumber = System.getenv("BUILD_NUMBER") ?: "dev"
 version = "v1.1." + buildnumber.toString()
@@ -47,7 +47,7 @@ def mavenuser = System.getenv("maven_user") ?: "1"
 
 minecraft {
     version = "1.7.10-10.13.3.1373-1.7.10"
-    assetDir = "eclipse/assets"
+    runDir = "eclipse"
     
     replaceIn "mod_PacasStuff.java"
     replace "@VERSION@", project.version
