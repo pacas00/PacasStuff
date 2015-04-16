@@ -15,7 +15,6 @@ import net.petercashel.PacasStuff.anvil.TileEntityPacasAnvil_Basic;
 import net.petercashel.PacasStuff.anvil.AE_Enabled.ItemPacasAnvilRenderer;
 import net.petercashel.PacasStuff.anvil.AE_Enabled.TileEntityPacasAnvil;
 import net.petercashel.PacasStuff.anvil.AE_Enabled.TileEntityPacasAnvilRenderer;
-import net.petercashel.PacasStuff.liquidDictDebug.DebugClientPacketHandler;
 import net.petercashel.PacasStuff.pacChest.TileEntityPacChest;
 import net.petercashel.PacasStuff.pacChest2.TileEntityPacChest2;
 import net.petercashel.PacasStuff.pacChest2.TileEntityPacChest2Renderer;
@@ -39,7 +38,7 @@ public class ClientProxy extends CommonProxy{
 	}
 
 	public void load(){
-		mod_PacasStuff.PacasDebugChannel.register(new DebugClientPacketHandler());
+	
 	}
 
 

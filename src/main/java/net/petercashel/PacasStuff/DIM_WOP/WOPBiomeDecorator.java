@@ -41,7 +41,6 @@ import net.minecraft.world.gen.feature.WorldGenDeadBush;
 import net.minecraft.world.gen.feature.WorldGenFlowers;
 import net.minecraft.world.gen.feature.WorldGenLakes;
 import net.minecraft.world.gen.feature.WorldGenLiquids;
-import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraft.world.gen.feature.WorldGenPumpkin;
 import net.minecraft.world.gen.feature.WorldGenReed;
 import net.minecraft.world.gen.feature.WorldGenSand;
@@ -74,13 +73,13 @@ public class WOPBiomeDecorator extends BiomeDecorator {
 	public WorldGenerator gravelGen;
 	public WorldGenerator coalGen;
 	public WorldGenerator ironGen;
-	/** Field that holds gold WorldGenMinable */
+	/** Field that holds gold WorldGenMinableModded */
 	public WorldGenerator goldGen;
-	/** Field that holds redstone WorldGenMinable */
+	/** Field that holds redstone WorldGenMinableModded */
 	public WorldGenerator redstoneGen;
-	/** Field that holds diamond WorldGenMinable */
+	/** Field that holds diamond WorldGenMinableModded */
 	public WorldGenerator diamondGen;
-	/** Field that holds Lapis WorldGenMinable */
+	/** Field that holds Lapis WorldGenMinableModded */
 	public WorldGenerator lapisGen;
 	public WorldGenFlowers yellowFlowerGen;
 	/** Field that holds mushroomBrown WorldGenFlowers */
@@ -142,22 +141,22 @@ public class WOPBiomeDecorator extends BiomeDecorator {
 	public int bigMushroomsPerChunk;
 	/** True if decorator should generate surface lava & water */
 	public boolean generateLakes;
-	public WorldGenMinable blockDiamondGen;
-	public WorldGenMinable blockEmeraldGen;
+	public WorldGenMinableModded blockDiamondGen;
+	public WorldGenMinableModded blockEmeraldGen;
 	private static final String __OBFID = "CL_00000164";
 
 	public WOPBiomeDecorator()
 	{
 		this.sandGen = new WorldGenSand(Blocks.sand, 7);
 		this.gravelAsSandGen = new WorldGenSand(Blocks.gravel, 6);
-		this.dirtGen = new WorldGenMinable(Blocks.dirt, 32);
-		this.gravelGen = new WorldGenMinable(Blocks.gravel, 32);
-		this.coalGen = new WorldGenMinable(Blocks.coal_ore, 16);
-		this.ironGen = new WorldGenMinable(Blocks.iron_ore, 8);
-		this.goldGen = new WorldGenMinable(Blocks.gold_ore, 8);
-		this.redstoneGen = new WorldGenMinable(Blocks.redstone_ore, 7);
-		this.diamondGen = new WorldGenMinable(Blocks.diamond_ore, 7);
-		this.lapisGen = new WorldGenMinable(Blocks.lapis_ore, 6);
+		this.dirtGen = new WorldGenMinableModded(Blocks.dirt, 32);
+		this.gravelGen = new WorldGenMinableModded(Blocks.gravel, 32);
+		this.coalGen = new WorldGenMinableModded(Blocks.coal_ore, 16);
+		this.ironGen = new WorldGenMinableModded(Blocks.iron_ore, 8);
+		this.goldGen = new WorldGenMinableModded(Blocks.gold_ore, 8);
+		this.redstoneGen = new WorldGenMinableModded(Blocks.redstone_ore, 7);
+		this.diamondGen = new WorldGenMinableModded(Blocks.diamond_ore, 7);
+		this.lapisGen = new WorldGenMinableModded(Blocks.lapis_ore, 6);
 		this.yellowFlowerGen = new WorldGenFlowers(Blocks.yellow_flower);
 		this.mushroomBrownGen = new WorldGenFlowers(Blocks.brown_mushroom);
 		this.mushroomRedGen = new WorldGenFlowers(Blocks.red_mushroom);
@@ -514,10 +513,10 @@ public class WOPBiomeDecorator extends BiomeDecorator {
 
 		//CUSTOM SHIT
 
-		this.blockDiamondGen = new WorldGenMinable(Blocks.diamond_block, 7);
+		this.blockDiamondGen = new WorldGenMinableModded(Blocks.diamond_block, 7);
 		this.genStandardOre1(1, this.blockDiamondGen, 0, 32);
 
-		this.blockEmeraldGen = new WorldGenMinable(Blocks.emerald_block, 6);
+		this.blockEmeraldGen = new WorldGenMinableModded(Blocks.emerald_block, 6);
 		this.genStandardOre1(1, this.blockEmeraldGen, 0, 32);
 
 

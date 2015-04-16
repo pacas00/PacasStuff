@@ -1,5 +1,6 @@
 package net.petercashel.PacasStuff;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -27,6 +28,7 @@ import net.minecraftforge.common.BiomeManager;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.oredict.OreDictionary;
 import net.petercashel.PacasStuff.DIM_Common.BlockPortalFire;
 import net.petercashel.PacasStuff.DIM_Redlands.BiomeGenRedlands;
 import net.petercashel.PacasStuff.DIM_Redlands.BlockRedlandsPortal;
@@ -40,7 +42,6 @@ import net.petercashel.PacasStuff.ExplosiveBlocks.blocks.*;
 import net.petercashel.PacasStuff.ModSpecific.AEModPlugin;
 import net.petercashel.PacasStuff.anvil.BlockPacasAnvil_basic;
 import net.petercashel.PacasStuff.anvil.anvilManager;
-import net.petercashel.PacasStuff.command.DebugCommandSender;
 import net.petercashel.PacasStuff.command.HQMEditToggle;
 import cpw.mods.fml.common.*;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -98,7 +99,6 @@ public class mod_PacasStuff {
 
 	private HQMEditToggle HQMEditToggleCMD;
 
-	private DebugCommandSender PacasDebugCommand;
 	
 	/** Dimensions **/ // Defaults set here. weird is happening
 	public static int DIM_ID_WOP;
@@ -304,6 +304,26 @@ public class mod_PacasStuff {
     		AEModPlugin.recipes();
     	}
 		System.out.println("[PacasStuff] Anvil Compatiblity Checks Complete.");
+		
+		
+		
+		ArrayList<ItemStack> oreCopper = OreDictionary.getOres("oreCopper");
+		if (!oreCopper.isEmpty()) BiomeGenWOP.blkRandom.add(Block.getBlockFromItem(oreCopper.get(0).getItem()));
+		ArrayList<ItemStack> oreTin = OreDictionary.getOres("oreTin");
+		if (!oreTin.isEmpty())  BiomeGenWOP.blkRandom.add(Block.getBlockFromItem(oreTin.get(0).getItem()));
+		ArrayList<ItemStack> oreSilver = OreDictionary.getOres("oreSilver");
+		if (!oreSilver.isEmpty())  BiomeGenWOP.blkRandom.add(Block.getBlockFromItem(oreSilver.get(0).getItem()));
+		ArrayList<ItemStack> orePlatinum = OreDictionary.getOres("orePlatinum");
+		if (!orePlatinum.isEmpty())  BiomeGenWOP.blkRandom.add(Block.getBlockFromItem(orePlatinum.get(0).getItem()));
+		ArrayList<ItemStack> oreNickel = OreDictionary.getOres("oreNickel");
+		if (!oreNickel.isEmpty())  BiomeGenWOP.blkRandom.add(Block.getBlockFromItem(oreNickel.get(0).getItem()));
+		ArrayList<ItemStack> oreUranium = OreDictionary.getOres("oreUranium");
+		if (!oreUranium.isEmpty())  BiomeGenWOP.blkRandom.add(Block.getBlockFromItem(oreUranium.get(0).getItem()));
+		ArrayList<ItemStack> oreAluminum = OreDictionary.getOres("oreAluminum");
+		if (!oreAluminum.isEmpty())  BiomeGenWOP.blkRandom.add(Block.getBlockFromItem(oreAluminum.get(0).getItem()));
+		ArrayList<ItemStack> oreLead = OreDictionary.getOres("oreLead");
+		if (!oreLead.isEmpty())  BiomeGenWOP.blkRandom.add(Block.getBlockFromItem(oreLead.get(0).getItem()));
+		
 	}
 	
 	@EventHandler
@@ -315,7 +335,6 @@ public class mod_PacasStuff {
 			HQMEditToggleCMD = new HQMEditToggle();
 			commands.registerCommand(HQMEditToggleCMD);	
 		}
-		PacasDebugCommand = new DebugCommandSender();
-		commands.registerCommand(PacasDebugCommand);
+
 	}
 }

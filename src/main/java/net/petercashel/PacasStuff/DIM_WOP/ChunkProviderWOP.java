@@ -273,7 +273,7 @@ public class ChunkProviderWOP implements IChunkProvider {
         this.caveGenerator.func_151539_a(this, this.worldObj, p_73154_1_, p_73154_2_, ablock);
         this.ravineGenerator.func_151539_a(this, this.worldObj, p_73154_1_, p_73154_2_, ablock);
 
-        BiomeGenWOP.stoneBlock = BiomeGenWOP.blkRandom.get(  ( BiomeGenWOP.r.nextInt(BiomeGenWOP.blkRandom.size()*9) )/10  );
+        BiomeGenWOP.nextBlock();
         if (this.mapFeaturesEnabled)
         {
             this.mineshaftGenerator.func_151539_a(this, this.worldObj, p_73154_1_, p_73154_2_, ablock);
