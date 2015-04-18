@@ -98,7 +98,6 @@ public class BlockPacasAnvil extends BlockContainer implements ITileEntityProvid
 		} else {
 			ItemStack heldItem = par5EntityPlayer.getHeldItem();
 			if (anvilManager.isInAnvilManager(heldItem)) {
-				System.out.println(heldItem + " " + anvilManager.getItemRepairMatID(heldItem));
 				if (par5EntityPlayer.getHeldItem().getItemDamage() == 0) {
 					if (!par1World.isRemote) {
 						// Chat Message saying item does not need repair
