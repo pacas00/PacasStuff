@@ -97,8 +97,12 @@ public class anvilManager {
 		Iterator<Anvil_ItemData> iterator = anvilList.iterator();
 		while (iterator.hasNext()) {
 			Anvil_ItemData p = iterator.next();
-			if (p.getItem().isItemEqual(par1Item)) {
-				iterator.remove();
+			try {
+				if (p.getItem().isItemEqual(par1Item)) {
+					iterator.remove();
+				}
+			} catch (NullPointerException e) {
+				e.printStackTrace();
 			}
 		}
 	}
@@ -114,8 +118,12 @@ public class anvilManager {
 		Iterator<Anvil_ItemData> iterator = anvilList.iterator();
 		while (iterator.hasNext()) {
 			Anvil_ItemData p = iterator.next();
-			if (p.getItem().isItemEqual(localClone)) {
-				return p.getRepairItem();
+			try {
+				if (p.getItem().isItemEqual(localClone)) {
+					return p.getRepairItem();
+				}
+			} catch (NullPointerException e) {
+				e.printStackTrace();
 			}
 		}
 		throw new IllegalArgumentException("Could not get repair material for item " + par1Item + " . not in anvilManager");
@@ -131,8 +139,12 @@ public class anvilManager {
 		Iterator<Anvil_ItemData> iterator = anvilList.iterator();
 		while (iterator.hasNext()) {
 			Anvil_ItemData p = iterator.next();
-			if (p.getItem().isItemEqual(localClone)) {
-				return p.getRepairDivider();
+			try {
+				if (p.getItem().isItemEqual(localClone)) {
+					return p.getRepairDivider();
+				}
+			} catch (NullPointerException e) {
+				e.printStackTrace();
 			}
 		}
 		throw new IllegalArgumentException("Could not get repair divider for item " + par1Item + " . not in anvilManager");
@@ -146,13 +158,17 @@ public class anvilManager {
 	public static boolean isInAnvilManager(ItemStack par1Item) {
 
 		ItemStack localClone = new ItemStack (par1Item.getItem());
-		localClone.setItemDamage(0);
 		Iterator<Anvil_ItemData> iterator = anvilList.iterator();
 		while (iterator.hasNext()) {
 			Anvil_ItemData p = iterator.next();
-			if (p.getItem().isItemEqual(localClone)) {
-				return true;
+			try {
+				if (p.getItem().isItemEqual(localClone)) {
+					return true;
+				}
+			} catch (NullPointerException e) {
+				e.printStackTrace();
 			}
+
 		}
 		return false;
 	}
@@ -169,7 +185,7 @@ public class anvilManager {
 		while (iterator.hasNext()) {
 			Anvil_ItemData p = iterator.next();
 			JsonObject jobj = new JsonObject();
-			
+
 			jobj.addProperty("modId", p.modId);
 			jobj.addProperty("name", p.name);
 			jobj.addProperty("metadata", p.metadata);
@@ -245,9 +261,9 @@ public class anvilManager {
 			return false;
 		}
 		JsonElement jelement = new JsonParser().parse(content);
-	    //JsonObject  jobject = jelement.getAsJsonObject();
-	    JsonArray jarray = jelement.getAsJsonArray();
-	    
+		//JsonObject  jobject = jelement.getAsJsonObject();
+		JsonArray jarray = jelement.getAsJsonArray();
+
 		Iterator<JsonElement> iterator = jarray.iterator();
 		while (iterator.hasNext()) {
 			JsonElement e = iterator.next();
@@ -263,7 +279,7 @@ public class anvilManager {
 					s.get("RepairMat_metadata").getAsInt(),
 					s.get("RepairMat_Divider").getAsInt()
 					);
-			
+
 			anvilList.add(data);
 		}
 
@@ -275,7 +291,7 @@ public class anvilManager {
 		byte[] encoded = Files.readAllBytes(Paths.get(path));
 		return new String(encoded, encoding);
 	}
-	
+
 	protected static void CompatLoad(Anvil_ItemData data) {
 		anvilManager.registerItem(data.getItem(), data.getRepairItem(), data.getRepairDivider());
 	}
