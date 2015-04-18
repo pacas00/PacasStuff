@@ -97,12 +97,8 @@ public class anvilManager {
 		Iterator<Anvil_ItemData> iterator = anvilList.iterator();
 		while (iterator.hasNext()) {
 			Anvil_ItemData p = iterator.next();
-			try {
-				if (p.getItem().isItemEqual(par1Item)) {
-					iterator.remove();
-				}
-			} catch (NullPointerException e) {
-				e.printStackTrace();
+			if (p.getItem().isItemEqual(par1Item)) {
+				iterator.remove();
 			}
 		}
 	}
@@ -112,16 +108,19 @@ public class anvilManager {
 	 * params: Item
 	 */
 	public static ItemStack getItemRepairMatID(ItemStack par1Item) {
-
+		ItemStack localClone = new ItemStack (par1Item.getItem());
+		localClone.setItemDamage(0);
 		Iterator<Anvil_ItemData> iterator = anvilList.iterator();
 		while (iterator.hasNext()) {
 			Anvil_ItemData p = iterator.next();
+
 			try {
-				if (p.getItem().isItemEqual(par1Item)) {
+				if (p.getItem().isItemEqual(localClone)) {
 					return p.getRepairItem();
 				}
-			} catch (NullPointerException e) {
+			}catch (NullPointerException e) {
 				e.printStackTrace();
+
 			}
 		}
 		throw new IllegalArgumentException("Could not get repair material for item " + par1Item + " . not in anvilManager");
@@ -132,14 +131,16 @@ public class anvilManager {
 	 * params: Item
 	 */
 	public static int getItemRepairDivider(ItemStack par1Item) {
+		ItemStack localClone = new ItemStack (par1Item.getItem());
+		localClone.setItemDamage(0);
 		Iterator<Anvil_ItemData> iterator = anvilList.iterator();
 		while (iterator.hasNext()) {
 			Anvil_ItemData p = iterator.next();
 			try {
-				if (p.getItem().isItemEqual(par1Item)) {
+				if (p.getItem().isItemEqual(localClone)) {
 					return p.getRepairDivider();
 				}
-			} catch (NullPointerException e) {
+			}catch (NullPointerException e) {
 				e.printStackTrace();
 			}
 		}
@@ -153,17 +154,18 @@ public class anvilManager {
 	 */
 	public static boolean isInAnvilManager(ItemStack par1Item) {
 
+		ItemStack localClone = new ItemStack (par1Item.getItem());
+		localClone.setItemDamage(0);
 		Iterator<Anvil_ItemData> iterator = anvilList.iterator();
 		while (iterator.hasNext()) {
 			Anvil_ItemData p = iterator.next();
 			try {
-				if (p.getItem().isItemEqual(par1Item)) {
+				if (p.getItem().isItemEqual(localClone)) {
 					return true;
 				}
 			} catch (NullPointerException e) {
 				e.printStackTrace();
 			}
-
 		}
 		return false;
 	}

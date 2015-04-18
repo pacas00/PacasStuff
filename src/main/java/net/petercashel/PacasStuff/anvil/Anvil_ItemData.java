@@ -65,6 +65,7 @@ public class Anvil_ItemData {
 
 	public ItemStack getItem() {
 		ItemStack stack = null;
+		try {
 		if(this.modId.equals("Minecraft")) {
 			for(Object o : GameData.getItemRegistry()) {
 				if(o instanceof Item) {
@@ -77,6 +78,9 @@ public class Anvil_ItemData {
 			}
 			if(stack == null) return null;
 		} else stack = GameRegistry.findItemStack(modId, name, 1);
+		} catch (NullPointerException e) {
+			stack = GameRegistry.findItemStack(modId, name, 1);
+		}
 		return stack;
 	}
 

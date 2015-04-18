@@ -42,7 +42,6 @@ import net.petercashel.PacasStuff.ExplosiveBlocks.blocks.*;
 import net.petercashel.PacasStuff.ModSpecific.AEModPlugin;
 import net.petercashel.PacasStuff.anvil.BlockPacasAnvil_basic;
 import net.petercashel.PacasStuff.anvil.anvilManager;
-import net.petercashel.PacasStuff.command.HQMEditToggle;
 import cpw.mods.fml.common.*;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -97,7 +96,6 @@ public class mod_PacasStuff {
 
 	private MinecraftServer server;
 
-	private HQMEditToggle HQMEditToggleCMD;
 
 	
 	/** Dimensions **/ // Defaults set here. weird is happening
@@ -331,10 +329,6 @@ public class mod_PacasStuff {
 	{
 		server = MinecraftServer.getServer();
 		ServerCommandManager commands = (ServerCommandManager) server.getCommandManager();
-		if (Loader.isModLoaded("HardcoreQuesting")) {
-			HQMEditToggleCMD = new HQMEditToggle();
-			commands.registerCommand(HQMEditToggleCMD);	
-		}
 
 	}
 }
