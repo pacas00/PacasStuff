@@ -113,13 +113,11 @@ public class anvilManager {
 	 */
 	public static ItemStack getItemRepairMatID(ItemStack par1Item) {
 
-		ItemStack localClone = new ItemStack (par1Item.getItem());
-		localClone.setItemDamage(0);
 		Iterator<Anvil_ItemData> iterator = anvilList.iterator();
 		while (iterator.hasNext()) {
 			Anvil_ItemData p = iterator.next();
 			try {
-				if (p.getItem().isItemEqual(localClone)) {
+				if (p.getItem().isItemEqual(par1Item)) {
 					return p.getRepairItem();
 				}
 			} catch (NullPointerException e) {
@@ -134,13 +132,11 @@ public class anvilManager {
 	 * params: Item
 	 */
 	public static int getItemRepairDivider(ItemStack par1Item) {
-		ItemStack localClone = new ItemStack (par1Item.getItem());
-		localClone.setItemDamage(0);
 		Iterator<Anvil_ItemData> iterator = anvilList.iterator();
 		while (iterator.hasNext()) {
 			Anvil_ItemData p = iterator.next();
 			try {
-				if (p.getItem().isItemEqual(localClone)) {
+				if (p.getItem().isItemEqual(par1Item)) {
 					return p.getRepairDivider();
 				}
 			} catch (NullPointerException e) {
@@ -157,12 +153,11 @@ public class anvilManager {
 	 */
 	public static boolean isInAnvilManager(ItemStack par1Item) {
 
-		ItemStack localClone = new ItemStack (par1Item.getItem());
 		Iterator<Anvil_ItemData> iterator = anvilList.iterator();
 		while (iterator.hasNext()) {
 			Anvil_ItemData p = iterator.next();
 			try {
-				if (p.getItem().isItemEqual(localClone)) {
+				if (p.getItem().isItemEqual(par1Item)) {
 					return true;
 				}
 			} catch (NullPointerException e) {
